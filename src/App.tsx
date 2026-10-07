@@ -172,6 +172,7 @@ export function App() {
                 onBack={() => setCurrentTab('journey')}
                 onMarkComplete={() => handleMarkChapterComplete(activeChapterNumber)}
                 isCompleted={completedChapters.includes(activeChapterNumber)}
+                onSelectLesson={handleSelectLesson}
               />
             );
           })()}

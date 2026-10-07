@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   Trophy,
   BookOpen,
@@ -28,6 +29,7 @@ interface ChapterLessonViewProps {
   onBack: () => void;
   onMarkComplete: () => void;
   isCompleted: boolean;
+  onSelectLesson?: (lessonNumber: number) => void;
 }
 
 // ─── Opening Supplication (Al-Hira Neo-Noorani Qaida Opening) ────────────────
@@ -266,7 +268,8 @@ const ALL_28_LETTERS_LIST = [
 
 const AlphabetMakhrajLesson: React.FC<{
   language?: LanguageOption;
-}> = ({ language = 'english' }) => {
+  onSelectLesson?: (lessonNumber: number) => void;
+}> = ({ language = 'english', onSelectLesson }) => {
   const [activeTab, setActiveTab] = useState<'all' | 'heavy' | 'light' | 'zones' | 'compare' | 'muqattaat'>('all');
 
   const heavyLetters = [
@@ -478,18 +481,35 @@ const AlphabetMakhrajLesson: React.FC<{
             {ALL_28_LETTERS_LIST.map((l) => (
               <div
                 key={l.num}
-                onClick={() => playArabicAudio(l.char)}
+                onClick={() => {
+                  playArabicAudio(l.char);
+                  if (onSelectLesson) {
+                    onSelectLesson(l.num);
+                  }
+                }}
                 className="bg-white hover:bg-amber-50/80 border-2 border-slate-200 hover:border-amber-400 rounded-2xl p-4 text-center cursor-pointer transition-all hover:scale-102 shadow-2xs group relative space-y-2"
               >
                 <div className="flex items-center justify-between" dir="ltr">
                   <span className="w-6 h-6 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black flex items-center justify-center">
                     #{l.num}
                   </span>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    l.type === 'heavy' ? 'bg-amber-200 text-amber-950' : 'bg-emerald-100 text-emerald-900'
-                  }`}>
-                    {l.type === 'heavy' ? '🐘 Heavy' : '🕊️ Light'}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playArabicAudio(l.char);
+                      }}
+                      className="p-1 rounded-full text-amber-800 hover:bg-amber-100 transition-colors"
+                      title="Play Audio Only"
+                    >
+                      <Volume2 className="w-3.5 h-3.5 text-amber-700" />
+                    </button>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      l.type === 'heavy' ? 'bg-amber-200 text-amber-950' : 'bg-emerald-100 text-emerald-900'
+                    }`}>
+                      {l.type === 'heavy' ? '🐘 Heavy' : '🕊️ Light'}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="font-arabic font-black text-5xl text-burgundy-950 group-hover:scale-110 transition-transform">
@@ -501,6 +521,10 @@ const AlphabetMakhrajLesson: React.FC<{
                   <div className="text-[10px] text-slate-500 font-medium">{l.zone}</div>
                 </div>
 
+                <div dir="ltr" className="pt-2 border-t border-slate-100 flex items-center justify-center gap-1 text-[11px] font-bold text-amber-800 group-hover:text-amber-900">
+                  <span>Study Letter {l.num}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             ))}
           </div>
@@ -2657,10 +2681,11 @@ const ChapterQuiz: React.FC<{
 // ─── Lesson Selector ─────────────────────────────────────────────────────────
 const getLessonContent = (
   chapterNumber: number,
-  language: LanguageOption
+  language: LanguageOption,
+  onSelectLesson?: (lessonNumber: number) => void
 ): React.ReactNode => {
   switch (chapterNumber) {
-    case 1: return <AlphabetMakhrajLesson language={language} />;
+    case 1: return <AlphabetMakhrajLesson language={language} onSelectLesson={onSelectLesson} />;
     case 2: return <HarakatLesson language={language} />;
     case 3: return <LetterJoiningLesson language={language} />;
     case 4: return <TanweenLesson language={language} />;
@@ -2680,6 +2705,7 @@ export const ChapterLessonView: React.FC<ChapterLessonViewProps> = ({
   onBack,
   onMarkComplete,
   isCompleted,
+  onSelectLesson,
 }) => {
   return (
     <div className="max-w-2xl mx-auto space-y-6 pb-12">
@@ -2704,7 +2730,7 @@ export const ChapterLessonView: React.FC<ChapterLessonViewProps> = ({
         </div>
       </div>
 
-      {getLessonContent(chapter.number, language)}
+      {getLessonContent(chapter.number, language, onSelectLesson)}
 
       {/* Tajweed Color Legend */}
       <TajweedColorLegend language={language} />
