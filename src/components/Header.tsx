@@ -36,9 +36,9 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu className="w-6 h-6" />
         </button>
 
-        {/* Quick Nav Links (Visible across desktop & tablet) */}
+        {/* Quick Nav Links (Hidden on mobile, accessible via hamburger menu) */}
         {onSelectTab && (
-          <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-amber-900/10 shadow-2xs">
+          <div className="hidden md:flex items-center gap-1.5 bg-white p-1 rounded-xl border border-amber-900/10 shadow-2xs">
             <button
               onClick={() => onSelectTab('dashboard')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
