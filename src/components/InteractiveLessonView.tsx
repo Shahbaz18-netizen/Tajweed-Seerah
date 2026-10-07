@@ -70,7 +70,6 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
   lesson,
   mode,
   language = 'hinglish',
-  onChangeLanguage,
   onSelectLesson,
   onToggleComplete,
   onUpdateLessonMakhrajImage,
@@ -85,13 +84,6 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
       setSelectedLang(language);
     }
   }, [language]);
-
-  const handleLangSwitch = (lang: LanguageOption) => {
-    setSelectedLang(lang);
-    if (onChangeLanguage) {
-      onChangeLanguage(lang);
-    }
-  };
 
   const trilingualMakhraj = getTrilingualMakhrajText(lesson.lessonNumber, selectedLang);
   const activeDescription =
@@ -270,11 +262,11 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
                 </div>
               </div>
 
-              {/* Pronunciation & Language Rows */}
+              {/* Pronunciation & Description */}
               <div className="p-4 space-y-2.5 bg-white border-t border-slate-100 text-xs">
                 <button
                   onClick={handlePlayLetter}
-                  className="w-full py-2 px-3 rounded-xl bg-rose-100 text-rose-950 font-bold flex items-center justify-between hover:bg-rose-200 transition-colors shadow-2xs"
+                  className="w-full py-2.5 px-3.5 rounded-xl bg-rose-100 text-rose-950 font-bold flex items-center justify-between hover:bg-rose-200 transition-colors shadow-2xs cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
                     <Volume2 className="w-4 h-4 text-rose-700 shrink-0" />
@@ -283,65 +275,11 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
                   <span className="text-[10px] bg-rose-200 text-rose-900 px-2 py-0.5 rounded font-black uppercase">Listen</span>
                 </button>
 
-                {/* Active Description Box */}
-                <div className="p-3 bg-amber-50 rounded-2xl border-2 border-amber-300/80 shadow-2xs space-y-1">
-                  <div className="flex items-center justify-between text-[11px] font-black">
-                    <span className="text-amber-900 uppercase tracking-wider flex items-center gap-1">
-                      {selectedLang === 'english' && '🇬🇧 Active Language: English'}
-                      {selectedLang === 'hinglish' && '💬 Active Language: Hinglish (Roman)'}
-                      {selectedLang === 'urdu' && '🇵🇰 Active Language: Urdu'}
-                    </span>
-                  </div>
-                  <p className={selectedLang === 'urdu' ? 'font-arabic font-extrabold text-emerald-950 text-base leading-relaxed text-right' : 'font-bold text-slate-900 text-xs leading-relaxed'}>
-                    {selectedLang === 'english' && lesson.englishDescription}
-                    {selectedLang === 'hinglish' && lesson.hinglishDescription}
-                    {selectedLang === 'urdu' && lesson.urduDescription}
+                {/* Clean Description Box */}
+                <div className="p-3.5 bg-amber-50/90 rounded-2xl border border-amber-300/80 shadow-2xs">
+                  <p className={selectedLang === 'urdu' ? 'font-arabic font-extrabold text-emerald-950 text-base leading-relaxed text-right' : 'font-bold text-slate-800 text-xs leading-relaxed'}>
+                    {activeDescription}
                   </p>
-                </div>
-
-                {/* Clickable Language Selector Cards */}
-                <div className="grid grid-cols-1 gap-1.5 font-medium">
-                  <button
-                    onClick={() => handleLangSwitch('english')}
-                    className={`flex items-center justify-between p-2 rounded-xl border transition-all text-left cursor-pointer ${
-                      selectedLang === 'english'
-                        ? 'bg-amber-100/80 border-amber-400 ring-2 ring-amber-400/40 text-slate-950 shadow-2xs font-extrabold'
-                        : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
-                    }`}
-                  >
-                    <span className="font-bold flex items-center gap-1.5 shrink-0">
-                      🇬🇧 English:
-                    </span>
-                    <span className="text-xs truncate ml-2">{lesson.englishDescription}</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleLangSwitch('hinglish')}
-                    className={`flex items-center justify-between p-2 rounded-xl border transition-all text-left cursor-pointer ${
-                      selectedLang === 'hinglish'
-                        ? 'bg-sky-100/80 border-sky-400 ring-2 ring-sky-400/40 text-sky-950 shadow-2xs font-extrabold'
-                        : 'bg-sky-50/50 border-sky-100 hover:bg-sky-100 text-sky-900'
-                    }`}
-                  >
-                    <span className="font-bold flex items-center gap-1.5 shrink-0">
-                      💬 Hinglish:
-                    </span>
-                    <span className="text-xs truncate ml-2">{lesson.hinglishDescription}</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleLangSwitch('urdu')}
-                    className={`flex items-center justify-between p-2 rounded-xl border transition-all text-left cursor-pointer ${
-                      selectedLang === 'urdu'
-                        ? 'bg-emerald-100/80 border-emerald-400 ring-2 ring-emerald-400/40 text-emerald-950 shadow-2xs font-extrabold'
-                        : 'bg-emerald-50/50 border-emerald-100 hover:bg-emerald-100 text-emerald-900'
-                    }`}
-                  >
-                    <span className="font-bold flex items-center gap-1.5 shrink-0">
-                      🇵🇰 Urdu:
-                    </span>
-                    <span className="font-arabic font-bold text-xs truncate ml-2" dir="rtl">{lesson.urduDescription}</span>
-                  </button>
                 </div>
               </div>
             </div>

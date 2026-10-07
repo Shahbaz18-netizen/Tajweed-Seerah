@@ -502,11 +502,10 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
 
             <button
               onClick={handleToggleAudioNarration}
-              className={`px-3.5 py-2 rounded-2xl text-xs font-black transition-all flex items-center justify-center gap-2 border shadow-xs cursor-pointer ${
-                isAudioPlaying
+              className={`px-3.5 py-2 rounded-2xl text-xs font-black transition-all flex items-center justify-center gap-2 border shadow-xs cursor-pointer ${isAudioPlaying
                   ? 'bg-amber-400 text-burgundy-950 border-amber-300 animate-pulse'
                   : 'bg-black/30 text-amber-200 border-amber-400/30 hover:bg-black/50 hover:text-white'
-              }`}
+                }`}
             >
               {isAudioPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-amber-300" />}
               <span>{isAudioPlaying ? 'Stop' : 'Listen'}</span>
@@ -515,31 +514,28 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
             <div className="flex items-center gap-1 bg-black/40 p-1.5 rounded-2xl border border-amber-400/30">
               <button
                 onClick={() => handleLangSwitch('english')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedLang === 'english'
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${selectedLang === 'english'
                     ? 'bg-amber-400 text-slate-950 shadow-xs font-black'
                     : 'text-amber-200 hover:text-white'
-                }`}
+                  }`}
               >
                 🇬🇧 EN
               </button>
               <button
                 onClick={() => handleLangSwitch('hinglish')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedLang === 'hinglish'
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${selectedLang === 'hinglish'
                     ? 'bg-amber-400 text-slate-950 shadow-xs font-black'
                     : 'text-amber-200 hover:text-white'
-                }`}
+                  }`}
               >
                 💬 Hinglish
               </button>
               <button
                 onClick={() => handleLangSwitch('urdu')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer font-arabic ${
-                  selectedLang === 'urdu'
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer font-arabic ${selectedLang === 'urdu'
                     ? 'bg-amber-400 text-slate-950 shadow-xs font-black'
                     : 'text-amber-200 hover:text-white'
-                }`}
+                  }`}
               >
                 🇵🇰 اردو
               </button>
@@ -575,41 +571,37 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setEraFilter('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
-              eraFilter === 'all'
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${eraFilter === 'all'
                 ? 'bg-burgundy-900 text-white border-burgundy-950 shadow-xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
+              }`}
           >
             All 30 Mods
           </button>
           <button
             onClick={() => setEraFilter('makkan')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
-              eraFilter === 'makkan'
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${eraFilter === 'makkan'
                 ? 'bg-amber-600 text-white border-amber-700 shadow-xs'
                 : 'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100'
-            }`}
+              }`}
           >
             🕋 Makkan (1-20)
           </button>
           <button
             onClick={() => setEraFilter('madinan')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
-              eraFilter === 'madinan'
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${eraFilter === 'madinan'
                 ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
                 : 'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100'
-            }`}
+              }`}
           >
             🕌 Madinan (21-30)
           </button>
           <button
             onClick={() => setEraFilter('completed')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
-              eraFilter === 'completed'
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${eraFilter === 'completed'
                 ? 'bg-purple-900 text-white border-purple-950 shadow-xs'
                 : 'bg-purple-50 text-purple-900 border-purple-200 hover:bg-purple-100'
-            }`}
+              }`}
           >
             ✅ Completed ({completedSeerahChapters.length})
           </button>
@@ -648,13 +640,12 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
               <button
                 key={chap.id}
                 onClick={() => setActiveChapterIndex(originalIndex)}
-                className={`px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 cursor-pointer border ${
-                  isCurrent
+                className={`px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 cursor-pointer border ${isCurrent
                     ? 'bg-burgundy-900 text-white border-burgundy-950 shadow-md scale-105'
                     : isCompleted
-                    ? 'bg-emerald-50 text-emerald-950 border-emerald-300 hover:bg-emerald-100'
-                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                }`}
+                      ? 'bg-emerald-50 text-emerald-950 border-emerald-300 hover:bg-emerald-100'
+                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                  }`}
               >
                 <span>{chap.icon}</span>
                 <span>Mod {chap.chapterNumber}</span>
@@ -691,11 +682,10 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
 
           <button
             onClick={() => handleMarkChapterComplete(currentChapter.chapterNumber)}
-            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs shrink-0 ${
-              completedSeerahChapters.includes(currentChapter.chapterNumber)
+            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-2 transition-all cursor-pointer shadow-xs shrink-0 ${completedSeerahChapters.includes(currentChapter.chapterNumber)
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-amber-400 hover:bg-amber-500 text-burgundy-950 border border-amber-500/40'
-            }`}
+              }`}
           >
             <BookmarkCheck className="w-4 h-4" />
             <span>
@@ -721,9 +711,8 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
             {currentChapter.fullStory[selectedLang].split('\n\n').map((paragraph, pIdx) => (
               <p
                 key={pIdx}
-                className={`p-4 sm:p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-2xs ${
-                  selectedLang === 'urdu' ? 'font-arabic text-right text-lg leading-loose text-slate-900' : ''
-                }`}
+                className={`p-4 sm:p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-2xs ${selectedLang === 'urdu' ? 'font-arabic text-right text-lg leading-loose text-slate-900' : ''
+                  }`}
               >
                 {paragraph}
               </p>
@@ -836,9 +825,8 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
                           key={optIdx}
                           disabled={isTestSubmitted}
                           onClick={() => handleSelectAnswer(qIdx, optIdx)}
-                          className={`p-3 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer ${btnStyle} ${
-                            selectedLang === 'urdu' ? 'font-arabic text-right' : ''
-                          }`}
+                          className={`p-3 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer ${btnStyle} ${selectedLang === 'urdu' ? 'font-arabic text-right' : ''
+                            }`}
                         >
                           {option}
                         </button>
@@ -884,11 +872,10 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
           <button
             disabled={activeChapterIndex === 0}
             onClick={handlePrevChapter}
-            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
-              activeChapterIndex === 0
+            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer ${activeChapterIndex === 0
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                 : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-            }`}
+              }`}
           >
             <ChevronLeft className="w-4 h-4" /> Previous Module
           </button>
@@ -900,11 +887,10 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
           <button
             disabled={activeChapterIndex === totalModules - 1}
             onClick={handleNextChapter}
-            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
-              activeChapterIndex === totalModules - 1
+            className={`px-4 py-2.5 rounded-2xl font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${activeChapterIndex === totalModules - 1
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                 : 'bg-burgundy-900 hover:bg-burgundy-950 text-white'
-            }`}
+              }`}
           >
             Next Module <ChevronRight className="w-4 h-4" />
           </button>
@@ -959,61 +945,55 @@ export const SeerahJourneyView: React.FC<SeerahJourneyViewProps> = ({
               <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none text-xs">
                 <button
                   onClick={() => setGlossaryCategory('all')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'all'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'all'
                       ? 'bg-burgundy-900 text-white border-burgundy-950 shadow-xs'
                       : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
-                  }`}
+                    }`}
                 >
                   All ({SEERAH_GLOSSARY.length})
                 </button>
                 <button
                   onClick={() => setGlossaryCategory('caliphs')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'caliphs'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'caliphs'
                       ? 'bg-amber-600 text-white border-amber-700 shadow-xs'
                       : 'bg-white text-amber-900 border-slate-200 hover:bg-amber-50'
-                  }`}
+                    }`}
                 >
                   ⭐ Caliphs
                 </button>
                 <button
                   onClick={() => setGlossaryCategory('women')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'women'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'women'
                       ? 'bg-purple-700 text-white border-purple-800 shadow-xs'
                       : 'bg-white text-purple-900 border-slate-200 hover:bg-purple-50'
-                  }`}
+                    }`}
                 >
                   🌸 Women of Islam
                 </button>
                 <button
                   onClick={() => setGlossaryCategory('warriors')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'warriors'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'warriors'
                       ? 'bg-rose-700 text-white border-rose-800 shadow-xs'
                       : 'bg-white text-rose-900 border-slate-200 hover:bg-rose-50'
-                  }`}
+                    }`}
                 >
                   🛡️ Warriors & Heroes
                 </button>
                 <button
                   onClick={() => setGlossaryCategory('scholars')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'scholars'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'scholars'
                       ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
                       : 'bg-white text-emerald-900 border-slate-200 hover:bg-emerald-50'
-                  }`}
+                    }`}
                 >
                   📜 Ambassadors & Scholars
                 </button>
                 <button
                   onClick={() => setGlossaryCategory('leaders')}
-                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${
-                    glossaryCategory === 'leaders'
+                  className={`px-3 py-1.5 rounded-xl font-extrabold cursor-pointer transition-all border ${glossaryCategory === 'leaders'
                       ? 'bg-blue-700 text-white border-blue-800 shadow-xs'
                       : 'bg-white text-blue-900 border-slate-200 hover:bg-blue-50'
-                  }`}
+                    }`}
                 >
                   👑 Kings & Leaders
                 </button>
