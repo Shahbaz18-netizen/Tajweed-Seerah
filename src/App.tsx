@@ -14,6 +14,7 @@ import { ClassroomView } from './components/ClassroomView';
 import { TeacherAnnotator } from './components/TeacherAnnotator';
 import { PWAInstallBanner } from './components/PWAInstallBanner';
 import { UniversalLifeMasteryView } from './components/UniversalLifeMasteryView';
+import { AdultLandingPage } from './components/AdultLandingPage';
 import { QURAN_CURRICULUM_CHAPTERS } from './data/chaptersData';
 
 export function App() {
@@ -158,6 +159,14 @@ export function App() {
             <UniversalLifeMasteryView
               language={appSettings.defaultLanguage || 'hinglish'}
               mode={mode}
+            />
+          )}
+
+          {currentTab === 'landing' && (
+            <AdultLandingPage
+              language={appSettings.defaultLanguage || 'english'}
+              onStartLearning={() => setCurrentTab('journey')}
+              onSelectTab={(tab) => setCurrentTab(tab as NavTab)}
             />
           )}
 

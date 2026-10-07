@@ -8,7 +8,8 @@ export type NavTab =
   | 'classroom'
   | 'settings'
   | 'chapter-lesson'
-  | 'life-mastery';
+  | 'life-mastery'
+  | 'landing';
 
 export type ArticulationZone = 'Throat' | 'Tongue' | 'Lips' | 'Nasal' | 'Empty Space';
 
