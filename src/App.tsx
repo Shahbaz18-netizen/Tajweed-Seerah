@@ -193,6 +193,7 @@ export function App() {
               onToggleComplete={handleToggleComplete}
               onUpdateLessonMakhrajImage={handleUpdateLessonMakhrajImage}
               totalLessons={lessons.length}
+              allLessons={lessons}
             />
           )}
 

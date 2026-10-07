@@ -10,10 +10,12 @@ import {
   Star,
   ChevronDown,
   ChevronUp,
-  GraduationCap
+  GraduationCap,
+  Volume2
 } from 'lucide-react';
 import type { LessonData, AppMode } from '../types';
 import { QURAN_CURRICULUM_CHAPTERS, type ChapterData } from '../data/chaptersData';
+import { playArabicAudio } from '../utils/audioHelper';
 
 interface ChapterJourneyViewProps {
   lessons: LessonData[];
@@ -184,7 +186,7 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
                         )}
                         {isUnlocked && isChapterCompleted(chapter) && (
                           <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Mastered
+                            <CheckCircle2 className="w-3-5 h-3.5" /> Mastered
                           </span>
                         )}
                       </div>
@@ -240,56 +242,123 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
 
                 {/* Expanded Details & Topics Breakdown */}
                 {isExpanded && (
-                  <div className="p-5 sm:p-6 bg-slate-50/60 border-t border-slate-100 space-y-5">
+                  <div className="p-5 sm:p-6 bg-slate-50/60 border-t border-slate-100 space-y-6">
                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
                       {chapter.description}
                     </p>
 
-                    {/* Topics Grid - Clickable to open lesson */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {chapter.topics.map((topic, idx) => (
-                        <button
-                          key={idx}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (isUnlocked || mode === 'teacher') {
-                              onOpenChapterLesson(chapter.number);
-                            }
-                          }}
-                          className={`w-full text-left bg-white p-3.5 rounded-2xl border transition-all space-y-1 shadow-2xs group ${
-                            isUnlocked || mode === 'teacher'
-                              ? 'hover:border-amber-400 hover:shadow-md cursor-pointer active:scale-[0.99] border-slate-200/80'
-                              : 'opacity-70 border-slate-200'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5 group-hover:text-amber-900">
-                              <span className="w-5 h-5 rounded-full bg-amber-100 group-hover:bg-amber-400 group-hover:text-slate-950 text-amber-900 text-[10px] font-black flex items-center justify-center transition-colors">
-                                {idx + 1}
-                              </span>
-                              {topic.title}
-                            </span>
-                            <div className="flex items-center gap-2">
-                              {topic.arabicExample && (
-                                <span className="font-arabic font-black text-sm text-burgundy-900" dir="rtl">
-                                  {topic.arabicExample}
+                    {/* INTERACTIVE 28 ARABIC LETTERS GRID FOR STAGE 1 */}
+                    {chapter.number === 1 && (
+                      <div className="space-y-3 pt-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-black uppercase text-amber-950 tracking-wider flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4 text-amber-600" /> Stage 1 Letters Grid (Click any letter to study)
+                          </h4>
+                          <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                            {completedLettersCount} / 28 Mastered
+                          </span>
+                        </div>
+
+                        <div dir="rtl" className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
+                          {lessons.map((l) => (
+                            <div
+                              key={l.id}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onSelectLesson(l.lessonNumber);
+                              }}
+                              className={`
+                                group relative flex flex-col justify-between p-3.5 rounded-2xl bg-white border text-right transition-all duration-150
+                                hover:-translate-y-1 hover:shadow-md hover:border-amber-400 cursor-pointer
+                                ${l.isCompleted ? 'border-emerald-300 bg-emerald-50/40 ring-1 ring-emerald-400/30' : 'border-slate-200'}
+                              `}
+                            >
+                              <div dir="ltr" className="flex items-center justify-between w-full">
+                                <span className="text-[10px] font-black text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200/60">
+                                  {String(l.lessonNumber).padStart(2, '0')}
                                 </span>
-                              )}
-                              {(isUnlocked || mode === 'teacher') && (
-                                <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-amber-600 transition-colors" />
-                              )}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    playArabicAudio(l.arabicLetter);
+                                  }}
+                                  className="p-1 rounded text-amber-800 hover:bg-amber-100 transition-colors"
+                                  title="Play Audio"
+                                >
+                                  <Volume2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+
+                              <div className="my-2 text-center w-full">
+                                <span className="font-arabic font-bold text-3xl text-slate-900 group-hover:text-burgundy-900 transition-colors block">
+                                  {l.arabicLetter}
+                                </span>
+                              </div>
+
+                              <div dir="ltr" className="flex items-center justify-between w-full text-[11px] pt-1.5 border-t border-slate-100">
+                                <span className="font-bold text-slate-700 truncate">{l.name}</span>
+                                {l.isCompleted ? (
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                ) : (
+                                  <span className="text-[9px] text-amber-800 font-bold uppercase">Study</span>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                          <p className="text-[11px] text-slate-500 leading-snug pl-6 group-hover:text-slate-700">
-                            {topic.description}
-                          </p>
-                          {(isUnlocked || mode === 'teacher') && (
-                            <div className="text-[10px] font-bold text-amber-700 pt-1 pl-6 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <span>Click to open lesson</span> →
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Topics Grid - Clickable to open lesson */}
+                    <div className="space-y-2 pt-2">
+                      <h4 className="text-xs font-black uppercase text-slate-500 tracking-wider">
+                        Stage {chapter.number} Lesson Topics & Key Objectives
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {chapter.topics.map((topic, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (isUnlocked || mode === 'teacher') {
+                                onOpenChapterLesson(chapter.number);
+                              }
+                            }}
+                            className={`w-full text-left bg-white p-3.5 rounded-2xl border transition-all space-y-1 shadow-2xs group ${
+                              isUnlocked || mode === 'teacher'
+                                ? 'hover:border-amber-400 hover:shadow-md cursor-pointer active:scale-[0.99] border-slate-200/80'
+                                : 'opacity-70 border-slate-200'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5 group-hover:text-amber-900">
+                                <span className="w-5 h-5 rounded-full bg-amber-100 group-hover:bg-amber-400 group-hover:text-slate-950 text-amber-900 text-[10px] font-black flex items-center justify-center transition-colors">
+                                  {idx + 1}
+                                </span>
+                                {topic.title}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                {topic.arabicExample && (
+                                  <span className="font-arabic font-black text-sm text-burgundy-900" dir="rtl">
+                                    {topic.arabicExample}
+                                  </span>
+                                )}
+                                {(isUnlocked || mode === 'teacher') && (
+                                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-amber-600 transition-colors" />
+                                )}
+                              </div>
                             </div>
-                          )}
-                        </button>
-                      ))}
+                            <p className="text-[11px] text-slate-500 leading-snug pl-6 group-hover:text-slate-700">
+                              {topic.description}
+                            </p>
+                            {(isUnlocked || mode === 'teacher') && (
+                              <div className="text-[10px] font-bold text-amber-700 pt-1 pl-6 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span>Click to open lesson</span> →
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Milestone Reward Footer */}

@@ -30,6 +30,7 @@ interface InteractiveLessonViewProps {
   onToggleComplete: (lessonId: string) => void;
   onUpdateLessonMakhrajImage?: (lessonId: string, newImageUrl: string) => void;
   totalLessons: number;
+  allLessons?: LessonData[];
 }
 
 // Helper function to render Arabic word with ONLY the target letter colored (preserving continuous Arabic RTL cursive flow)
@@ -74,6 +75,7 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
   onToggleComplete,
   onUpdateLessonMakhrajImage,
   totalLessons,
+  allLessons,
 }) => {
   const [selectedLang, setSelectedLang] = useState<LanguageOption>(language || 'hinglish');
 
@@ -104,6 +106,9 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [imageUrlInput, setImageUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const prevLesson = allLessons?.find(l => l.lessonNumber === lesson.lessonNumber - 1);
+  const nextLesson = allLessons?.find(l => l.lessonNumber === lesson.lessonNumber + 1);
 
   // Makhraj Image Upload Handlers
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,46 +145,75 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
     playArabicAudio(word);
   };
 
+  const handleMarkCompleteAndNext = () => {
+    if (!isCompleted) {
+      onToggleComplete(lesson.id);
+      confetti({
+        particleCount: 70,
+        spread: 60,
+        origin: { y: 0.8 }
+      });
+    }
+    if (lesson.lessonNumber < totalLessons) {
+      onSelectLesson(lesson.lessonNumber + 1);
+    }
+  };
+
   return (
-    <div className="space-y-6 pb-20 max-w-6xl mx-auto">
+    <div className="space-y-6 pb-32 max-w-6xl mx-auto relative">
       {/* Top Bar with Navigation & Complete Button */}
       <div className="flex items-center justify-between bg-white p-4 sm:p-5 rounded-2xl border border-amber-900/10 shadow-xs">
         <button
           onClick={() => onSelectLesson(Math.max(1, lesson.lessonNumber - 1))}
           disabled={lesson.lessonNumber <= 1}
-          className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 font-bold text-xs flex items-center gap-1 transition-all"
+          className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+          title={prevLesson ? `Previous: Letter ${prevLesson.name} (${prevLesson.arabicLetter})` : 'Previous Letter'}
         >
-          <ChevronLeft className="w-4 h-4" /> Previous
+          <ChevronLeft className="w-4 h-4 text-amber-700" />
+          <span className="hidden sm:inline">Prev Letter</span>
+          {prevLesson && (
+            <span className="text-amber-800 font-arabic font-extrabold text-sm ml-0.5">
+              ({prevLesson.arabicLetter})
+            </span>
+          )}
         </button>
 
         <div className="text-center">
           <span className="text-[11px] font-bold text-amber-800 uppercase tracking-widest block">
-            Lesson {String(lesson.lessonNumber).padStart(2, '0')} of {totalLessons}
+            Letter {String(lesson.lessonNumber).padStart(2, '0')} of {totalLessons}
           </span>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-            Letter {lesson.name} ({lesson.arabicLetter})
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 flex items-center justify-center gap-2">
+            <span>{lesson.name}</span>
+            <span className="font-arabic text-amber-700 font-black">({lesson.arabicLetter})</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => onToggleComplete(lesson.id)}
-            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs ${
+            className={`px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
               isCompleted
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300'
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>{isCompleted ? 'Completed' : 'Mark Complete'}</span>
+            <span className="hidden sm:inline">{isCompleted ? 'Completed' : 'Mark Complete'}</span>
           </button>
 
           <button
             onClick={() => onSelectLesson(Math.min(totalLessons, lesson.lessonNumber + 1))}
             disabled={lesson.lessonNumber >= totalLessons}
-            className="px-3.5 py-2 rounded-xl bg-burgundy-900 hover:bg-burgundy-950 disabled:opacity-40 text-white font-bold text-xs flex items-center gap-1 transition-all"
+            className="px-3 py-2 rounded-xl bg-burgundy-900 hover:bg-burgundy-950 disabled:opacity-40 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+            title={nextLesson ? `Next: Letter ${nextLesson.name} (${nextLesson.arabicLetter})` : 'Next Letter'}
           >
-            Next <ChevronRight className="w-4 h-4" />
+            {nextLesson && (
+              <span className="text-amber-300 font-arabic font-extrabold text-sm mr-0.5">
+                ({nextLesson.arabicLetter})
+              </span>
+            )}
+            <span className="hidden sm:inline">Next Letter</span>
+            <ChevronRight className="w-4 h-4 text-amber-400" />
           </button>
         </div>
       </div>
@@ -999,6 +1033,66 @@ export const InteractiveLessonView: React.FC<InteractiveLessonViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* STICKY BOTTOM LETTER NAVIGATION FOOTER */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-amber-900/15 shadow-2xl p-3 sm:p-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+          {/* Previous Letter Button */}
+          <button
+            onClick={() => onSelectLesson(Math.max(1, lesson.lessonNumber - 1))}
+            disabled={lesson.lessonNumber <= 1}
+            className="flex-1 max-w-[200px] p-2 sm:p-2.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 disabled:opacity-40 text-slate-800 font-bold text-xs flex items-center justify-start gap-2 transition-all cursor-pointer group"
+          >
+            <div className="w-8 h-8 rounded-xl bg-slate-200 group-hover:bg-amber-500 group-hover:text-burgundy-950 flex items-center justify-center shrink-0 transition-colors">
+              <ChevronLeft className="w-5 h-5" />
+            </div>
+            <div className="text-left hidden sm:block truncate">
+              <span className="text-[10px] text-slate-500 uppercase font-extrabold tracking-wider block">
+                {prevLesson ? `Letter ${prevLesson.lessonNumber}` : 'Start'}
+              </span>
+              <span className="font-bold text-slate-900 text-xs truncate block">
+                {prevLesson ? `${prevLesson.name} (${prevLesson.arabicLetter})` : 'First Letter'}
+              </span>
+            </div>
+          </button>
+
+          {/* Central Main Action: Mark Complete & Next Letter */}
+          <button
+            onClick={handleMarkCompleteAndNext}
+            className="flex-1 max-w-sm py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 transition-all transform active:scale-98 cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse hidden sm:inline" />
+            <span>
+              {lesson.lessonNumber >= totalLessons
+                ? isCompleted
+                  ? 'Completed All 28 Letters 🎉'
+                  : 'Mark Final Letter Complete 🎉'
+                : isCompleted
+                ? 'Next Letter ➔'
+                : 'Mark Complete & Next Letter ➔'}
+            </span>
+          </button>
+
+          {/* Next Letter Button */}
+          <button
+            onClick={() => onSelectLesson(Math.min(totalLessons, lesson.lessonNumber + 1))}
+            disabled={lesson.lessonNumber >= totalLessons}
+            className="flex-1 max-w-[200px] p-2 sm:p-2.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 disabled:opacity-40 text-slate-800 font-bold text-xs flex items-center justify-end gap-2 transition-all cursor-pointer group"
+          >
+            <div className="text-right hidden sm:block truncate">
+              <span className="text-[10px] text-slate-500 uppercase font-extrabold tracking-wider block">
+                {nextLesson ? `Letter ${nextLesson.lessonNumber}` : 'End'}
+              </span>
+              <span className="font-bold text-slate-900 text-xs truncate block">
+                {nextLesson ? `${nextLesson.name} (${nextLesson.arabicLetter})` : 'Completed'}
+              </span>
+            </div>
+            <div className="w-8 h-8 rounded-xl bg-burgundy-900 text-amber-400 group-hover:bg-burgundy-950 flex items-center justify-center shrink-0 transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
