@@ -9,8 +9,7 @@ import {
   Star,
   ChevronDown,
   ChevronUp,
-  Check,
-  Gift
+  Check
 } from 'lucide-react';
 import type { LanguageOption } from '../utils/translations';
 import confetti from 'canvas-confetti';
@@ -33,29 +32,6 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
     onStartLearning();
   };
 
-  const grandSlamBonuses = [
-    {
-      title: 'FREE BONUS #1: Trilingual Tajweed Cheat-Sheet Handbook (PDF)',
-      value: '$47 Value',
-      desc: 'Instant printable quick-reference guide for all 17 Makhraj throat & tongue points in English, Hinglish, and Urdu.'
-    },
-    {
-      title: 'FREE BONUS #2: 30-Day Qur\'an Reading Action Calendar',
-      value: '$37 Value',
-      desc: 'Step-by-step 10-minute daily micro-lesson tracker that takes you from 28 individual letters to reciting Surah Al-Fatiha.'
-    },
-    {
-      title: 'FREE BONUS #3: Qari Slow-Motion Audio Trainer (0.5x / 0.75x)',
-      value: '$67 Value',
-      desc: 'Listen to difficult guttural throat letters (`ع`, `ح`, `خ`, `غ`) in slow motion for effortless audio mimicry.'
-    },
-    {
-      title: 'FREE BONUS #4: Official Verified Certificate of Tajweed Mastery',
-      value: '$35 Value',
-      desc: 'Personalized, printable certificate with QR verification code upon completing retention exams.'
-    }
-  ];
-
   const faqs = [
     {
       q: 'Is this platform suitable for complete adult beginners with zero prior Arabic knowledge?',
@@ -70,21 +46,21 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
       a: 'Yes, 100% private. We understand that many adult learners feel self-conscious starting from zero. Your progress, practice sessions, and retention quizzes are completely private and self-paced.'
     },
     {
-      q: 'How does the 100% Risk-Free 30-Day Guarantee work?',
-      a: 'Try the full Pro System for 30 days. If you don\'t recite the Holy Qur\'an with crystal-clear pronunciation and total confidence, send us a 1-line email and we will immediately refund 100% of your money. You keep all the bonuses!'
-    },
-    {
       q: 'Can I use this on both my mobile phone and laptop/desktop computer?',
       a: 'Yes! The platform is 100% responsive and works seamlessly across iPhone, Android, iPad, Mac, and Windows PC with automatic cloud synchronization.'
+    },
+    {
+      q: 'Can I cancel my subscription at any time?',
+      a: 'Absolutely. You have total control over your account and can pause or cancel your subscription at any time with a single click from your account dashboard.'
     }
   ];
 
   return (
     <div className="space-y-12 max-w-6xl mx-auto pb-20 font-sans">
       {/* ─── URGENCY TOP ANNOUNCEMENT BAR ──────────────────────────────────── */}
-      <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-burgundy-950 font-black text-xs sm:text-sm py-2.5 px-4 rounded-2xl text-center shadow-md flex items-center justify-center gap-2 border border-amber-300 animate-pulse">
-        <Gift className="w-4 h-4 text-burgundy-950 shrink-0" />
-        <span>GRAND SLAM OFFER: Get 4 FREE Bonuses Worth $186 Included With Any Pro Pass Today!</span>
+      <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-burgundy-950 font-black text-xs sm:text-sm py-2.5 px-4 rounded-2xl text-center shadow-md flex items-center justify-center gap-2 border border-amber-300">
+        <Sparkles className="w-4 h-4 text-burgundy-950 shrink-0 animate-spin" />
+        <span>SPECIAL OFFER: Master Authentic Qur'an Pronunciation & Seerah Privately at Your Own Pace!</span>
       </div>
 
       {/* ─── 1. HERO SECTION ($100M HOOK & DREAM OUTCOME) ──────────────────── */}
@@ -237,81 +213,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
         </div>
       </div>
 
-      {/* ─── 3. THE $100M GRAND SLAM OFFER BONUS STACK ──────────────────────── */}
-      <div className="bg-gradient-to-br from-amber-950 via-[#4A1521] to-burgundy-950 text-white p-6 sm:p-10 rounded-3xl border-2 border-amber-400/40 shadow-2xl space-y-6">
-        <div className="text-center space-y-2 max-w-3xl mx-auto">
-          <span className="text-xs font-black uppercase text-amber-300 bg-amber-400/20 px-3 py-1 rounded-full border border-amber-400/30">
-            🎁 The Grand Slam Bonus Stack
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-white">
-            Everything Included With Your Pro Pass Today
-          </h2>
-          <p className="text-xs sm:text-sm text-amber-100/90 font-medium">
-            When you join today, you get the complete adult system PLUS 4 valuable bonuses FREE!
-          </p>
-        </div>
-
-        {/* Core System Bar */}
-        <div className="bg-white/10 p-4 rounded-2xl border border-amber-400/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-400 text-burgundy-950 font-black flex items-center justify-center shrink-0 text-lg">
-              📖
-            </div>
-            <div>
-              <h4 className="font-extrabold text-white text-sm">Core System 1: The 8-Stage Adult Tajweed & Makhraj Engine</h4>
-              <p className="text-xs text-amber-200/80">From 28 individual letter makharij to complete Tajweed rules & daily prayer recitation.</p>
-            </div>
-          </div>
-          <span className="text-xs font-black text-amber-300 bg-black/40 px-3 py-1 rounded-full border border-amber-400/30 shrink-0">
-            $197 Value (Included)
-          </span>
-        </div>
-
-        <div className="bg-white/10 p-4 rounded-2xl border border-amber-400/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-400 text-burgundy-950 font-black flex items-center justify-center shrink-0 text-lg">
-              📜
-            </div>
-            <div>
-              <h4 className="font-extrabold text-white text-sm">Core System 2: 30 Long-Form Classical Seerah Modules</h4>
-              <p className="text-xs text-amber-200/80">Inspired by Safiur Rahman Mubarakpuri's *Ar-Raheeq Al-Makhtum* with end-of-lesson exams.</p>
-            </div>
-          </div>
-          <span className="text-xs font-black text-amber-300 bg-black/40 px-3 py-1 rounded-full border border-amber-400/30 shrink-0">
-            $97 Value (Included)
-          </span>
-        </div>
-
-        {/* 4 Stacked Bonuses */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-          {grandSlamBonuses.map((bonus, idx) => (
-            <div key={idx} className="bg-black/30 p-4 rounded-2xl border border-amber-400/20 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-amber-300 flex items-center gap-1">
-                  <Gift className="w-3.5 h-3.5 text-amber-400" /> {bonus.title}
-                </span>
-                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-400/30">
-                  {bonus.value}
-                </span>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                {bonus.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Value Calculation Box */}
-        <div className="bg-black/50 p-4 rounded-2xl border border-amber-400/40 text-center space-y-1">
-          <div className="text-xs text-amber-200 font-bold uppercase tracking-wider">Total Combined Real Value</div>
-          <div className="text-2xl sm:text-3xl font-black text-white">
-            <span className="line-through text-slate-400 mr-2">$481</span>
-            <span className="text-amber-400">Included FREE with Pro Membership</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── 4. $100M MONEY MODEL PRICING TIERS ────────────────────────────── */}
+      {/* ─── 3. PRICING TIERS ───────────────────────────────────────────────── */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
@@ -359,7 +261,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
             </button>
           </div>
 
-          {/* Tier 2: Annual Grand Slam (MOST POPULAR) */}
+          {/* Tier 2: Annual (MOST POPULAR) */}
           <div 
             onClick={() => setSelectedTier('annual')}
             className={`bg-gradient-to-b from-burgundy-950 to-amber-950 text-white rounded-3xl p-6 border-2 transition-all cursor-pointer flex flex-col justify-between space-y-5 relative shadow-2xl transform md:-translate-y-2 ${
@@ -369,7 +271,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
             }`}
           >
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-burgundy-950 font-black text-[11px] px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
-              ⭐ Grand Slam Offer — Save 60%
+              ⭐ Most Popular — Save 60%
             </div>
 
             <div className="space-y-3 pt-2">
@@ -378,12 +280,12 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
                 <span className="text-4xl sm:text-5xl font-black text-amber-400">$49</span>
                 <span className="text-xs text-amber-200 font-bold">/ year ($4.08/mo)</span>
               </div>
-              <p className="text-xs text-amber-100/90 font-medium">Complete 1-year mastery pass with all 4 bonuses.</p>
+              <p className="text-xs text-amber-100/90 font-medium">Complete 1-year mastery pass for adult learners.</p>
               
               <ul className="space-y-2.5 text-xs text-amber-100 font-semibold pt-3 border-t border-white/10">
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Everything in Monthly Pass</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> <strong>All 4 FREE Grand Slam Bonuses ($186 Value)</strong></li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> <strong>Verified Printable Certificate</strong></li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Priority Trilingual Support</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Verified Printable Certificate</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> 0.5x Slow-Motion Qari Audio Player</li>
               </ul>
             </div>
@@ -392,7 +294,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               onClick={handleClaimTrial}
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-burgundy-950 font-black text-xs sm:text-sm transition-all shadow-lg cursor-pointer"
             >
-              Claim Annual Grand Slam Pass ➔
+              Start Annual Mastery Pass ➔
             </button>
           </div>
 
@@ -416,7 +318,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <ul className="space-y-2.5 text-xs text-slate-700 font-semibold pt-3 border-t border-slate-100">
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Unlimited Lifetime Access</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Family Access (Up to 4 Accounts)</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> All 4 Grand Slam Bonuses Included</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> All Future Module Updates Included</li>
                 <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> VIP Student Support</li>
               </ul>
             </div>
@@ -431,22 +333,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
         </div>
       </div>
 
-      {/* ─── 5. IRONCLAD $100M RISK REVERSAL GUARANTEE ────────────────────── */}
-      <div className="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-md">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-lg text-2xl">
-          🛡️
-        </div>
-        <div className="space-y-2 text-center sm:text-left">
-          <h3 className="text-lg sm:text-xl font-black text-emerald-950">
-            Our 100% Risk-Free 30-Day Money-Back Guarantee
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-            Try the Tajweed Master Adult System for 30 full days. If you don't recite the Holy Qur'an with crystal-clear pronunciation, total confidence, and flawless Makharij, send us a 1-line email and we'll refund 100% of your money immediately. No questions asked. You keep all 4 bonuses!
-          </p>
-        </div>
-      </div>
-
-      {/* ─── 6. ADULT TESTIMONIALS & REVIEWS ────────────────────────────────── */}
+      {/* ─── 4. ADULT TESTIMONIALS & REVIEWS ────────────────────────────────── */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
@@ -511,7 +398,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
         </div>
       </div>
 
-      {/* ─── 7. FREQUENTLY ASKED QUESTIONS (ACCORDION) ───────────────────────── */}
+      {/* ─── 5. FREQUENTLY ASKED QUESTIONS (ACCORDION) ───────────────────────── */}
       <div className="space-y-6 max-w-3xl mx-auto">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
@@ -545,11 +432,11 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
         </div>
       </div>
 
-      {/* ─── 8. FINAL HIGH-IMPACT CTA BANNER ─────────────────────────────────── */}
+      {/* ─── 6. FINAL HIGH-IMPACT CTA BANNER ─────────────────────────────────── */}
       <div className="bg-gradient-to-r from-burgundy-950 via-[#5E1726] to-amber-950 text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl border border-amber-500/20">
         <div className="space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-4xl font-black text-white font-serif">
-            Claim Your 7-Day Free Trial & All 4 Bonuses Today
+            Claim Your 7-Day Free Trial Today
           </h2>
           <p className="text-xs sm:text-sm text-amber-100/90 font-medium">
             Join 12,000+ adult Muslims mastering authentic Qur'an pronunciation in 10 minutes a day.
@@ -560,11 +447,11 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
           onClick={handleClaimTrial}
           className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-burgundy-950 font-black text-sm sm:text-base shadow-xl transition-all transform hover:scale-105 cursor-pointer inline-flex items-center gap-2"
         >
-          <span>Claim Your Grand Slam Trial Now ➔</span>
+          <span>Start Your Free Trial Now ➔</span>
         </button>
 
         <p className="text-[11px] text-amber-200/70 font-semibold">
-          🛡️ 30-Day Money-Back Guarantee • 100% Risk Free • Cancel Anytime
+          🔒 100% Private & Self-Paced • Cancel Anytime
         </p>
       </div>
     </div>
