@@ -105,3 +105,24 @@ export interface BookSettings {
   selectedBook: string;
   templatePreset: TemplatePreset;
 }
+
+export interface DailyHomework {
+  lessonNumber: number;
+  listenDone: boolean;
+  quizPassed: boolean;
+  recordingSubmitted: boolean;
+  audioBlobUrl?: string;
+  feedbackStatus?: 'pending' | 'passed' | 'needs_practice';
+  teacherFeedback?: string;
+  submittedAt?: string;
+}
+
+export interface StudentProfile {
+  id: string;
+  name: string;
+  avatar: string;
+  currentChapterNumber: number;
+  unlockedLessonNumber: number;
+  homework: DailyHomework;
+  lastActive: string;
+}

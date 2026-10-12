@@ -21,6 +21,7 @@ interface PracticeQuizViewProps {
   lessons: LessonData[];
   language?: 'english' | 'hinglish' | 'urdu';
   onSelectLesson?: (lessonNumber: number) => void;
+  unlockedLessonNumber?: number;
 }
 
 type QuizCategory = 'makhraj' | 'sifat' | 'forms' | 'flashcards';
@@ -106,8 +107,10 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
   lessons,
   language = 'hinglish',
   onSelectLesson,
+  unlockedLessonNumber,
 }) => {
   const [activeCategory, setActiveCategory] = useState<QuizCategory>('makhraj');
+  const [quizScope, setQuizScope] = useState<'unlocked' | 'all'>('unlocked');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
@@ -127,13 +130,21 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
   // Sound toggle
   const [isSoundMuted, setIsSoundMuted] = useState(false);
 
-  // Generate question pool based on actual 29 lessons
+  // Active lessons pool filtered by student unlock level
+  const scopedLessons = useMemo(() => {
+    if (quizScope === 'unlocked' && unlockedLessonNumber) {
+      return lessons.filter((l) => l.lessonNumber <= Math.max(1, unlockedLessonNumber));
+    }
+    return lessons;
+  }, [lessons, quizScope, unlockedLessonNumber]);
+
+  // Generate question pool based on scoped lessons
   const questions: Question[] = useMemo(() => {
     const list: Question[] = [];
 
     if (activeCategory === 'makhraj') {
       // Zone & Articulation questions
-      lessons.forEach((lesson) => {
+      scopedLessons.forEach((lesson) => {
         const allZones: ArticulationZone[] = ['Throat', 'Tongue', 'Lips', 'Nasal', 'Empty Space'];
         const otherZones = allZones.filter(z => z !== lesson.makhraj.zone).sort(() => 0.5 - Math.random()).slice(0, 3);
         const options = [
@@ -158,7 +169,7 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
       });
     } else if (activeCategory === 'sifat') {
       // 1. Heavy vs Light (Tafkheem vs Tarqeeq)
-      lessons.forEach((lesson) => {
+      scopedLessons.forEach((lesson) => {
         const isHeavy = HEAVY_LETTERS.includes(lesson.arabicLetter);
         list.push({
           id: `sifat_heavy_${lesson.lessonNumber}`,
@@ -249,7 +260,7 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
       });
     } else if (activeCategory === 'forms') {
       // 4-Forms & Word Recognition Questions
-      lessons.forEach((lesson) => {
+      scopedLessons.forEach((lesson) => {
         if (!lesson.vocabulary || lesson.vocabulary.length === 0) return;
         const sampleVocab = lesson.vocabulary[0];
         const posText = sampleVocab.position === 1 ? 'Beginning (اول)' : sampleVocab.position === 2 ? 'Middle (درمیان)' : sampleVocab.position === 3 ? 'Ending (آخر)' : 'Isolated (تنہا)';
@@ -335,7 +346,7 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
   };
 
   // Flashcard Helpers
-  const currentFlashcard = lessons[flashcardIndex];
+  const currentFlashcard = scopedLessons[flashcardIndex] || scopedLessons[0] || lessons[0];
   const applyHarakah = (char: string) => {
     switch (flashcardHarakah) {
       case 'fathah': return `${char}َ`;
@@ -365,8 +376,33 @@ export const PracticeQuizView: React.FC<PracticeQuizViewProps> = ({
             Tajweed Mastery Drill & Quiz
           </h1>
           <p className="text-amber-100/80 text-sm mt-1 max-w-xl">
-            Test your knowledge of all 29 letter makharij, heavy vs light rules, qalqalah echoes, and word positions with instant explanations.
+            Test your knowledge of makharij, heavy vs light rules, qalqalah echoes, and word positions with instant explanations.
           </p>
+
+          {/* Level Scope Controller */}
+          {unlockedLessonNumber && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-[11px] text-amber-200/80 font-bold uppercase tracking-wider">Quiz Scope:</span>
+              <div className="inline-flex items-center gap-1 bg-burgundy-950/80 p-1 rounded-xl border border-amber-400/30 text-xs">
+                <button
+                  onClick={() => { setQuizScope('unlocked'); handleRestartQuiz(); }}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    quizScope === 'unlocked' ? 'bg-amber-400 text-burgundy-950 shadow-xs' : 'text-amber-200/80 hover:text-white'
+                  }`}
+                >
+                  🎯 Current Stage (1–{unlockedLessonNumber})
+                </button>
+                <button
+                  onClick={() => { setQuizScope('all'); handleRestartQuiz(); }}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    quizScope === 'all' ? 'bg-amber-400 text-burgundy-950 shadow-xs' : 'text-amber-200/80 hover:text-white'
+                  }`}
+                >
+                  🌐 All 29 Letters
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Gamified Live Stats Counter */}
