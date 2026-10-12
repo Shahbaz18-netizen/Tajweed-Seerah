@@ -106,23 +106,15 @@ export interface BookSettings {
   templatePreset: TemplatePreset;
 }
 
-export interface DailyHomework {
-  lessonNumber: number;
-  listenDone: boolean;
-  quizPassed: boolean;
-  recordingSubmitted: boolean;
-  audioBlobUrl?: string;
-  feedbackStatus?: 'pending' | 'passed' | 'needs_practice';
-  teacherFeedback?: string;
-  submittedAt?: string;
-}
-
 export interface StudentProfile {
   id: string;
   name: string;
   avatar: string;
   currentChapterNumber: number;
   unlockedLessonNumber: number;
-  homework: DailyHomework;
+  plan: '2x' | '3x' | '4x';
+  nextLiveClass: string;
+  status: 'active' | 'passed' | 'needs_revision';
+  teacherNotes?: string;
   lastActive: string;
 }

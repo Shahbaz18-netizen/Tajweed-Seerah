@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { 
   Users, 
-  CheckCircle2, 
-  Clock, 
   AlertCircle, 
-  Play, 
-  Pause, 
   BookOpen, 
   Award, 
   ChevronDown, 
   ChevronUp, 
   FileText, 
-  Check
+  Check, 
+  Video,
+  Calendar
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { StudentProfile, LessonData } from '../types';
@@ -22,7 +20,7 @@ interface TeacherEvaluationQueueProps {
   onOpenClassroom?: () => void;
 }
 
-// Initial realistic student cohort data
+// Initial realistic 1-on-1 student cohort
 const INITIAL_STUDENTS: StudentProfile[] = [
   {
     id: 'std_1',
@@ -30,15 +28,10 @@ const INITIAL_STUDENTS: StudentProfile[] = [
     avatar: '👦',
     currentChapterNumber: 1,
     unlockedLessonNumber: 4,
-    homework: {
-      lessonNumber: 4,
-      listenDone: true,
-      quizPassed: true,
-      recordingSubmitted: true,
-      audioBlobUrl: 'mock_audio_url_zaid',
-      feedbackStatus: 'pending',
-      submittedAt: 'Today at 10:15 AM',
-    },
+    plan: '3x',
+    nextLiveClass: 'Today at 4:30 PM',
+    status: 'active',
+    teacherNotes: 'Completed Letters 1 to 3. Practicing Thaa (ث) live today.',
     lastActive: '15 mins ago',
   },
   {
@@ -47,31 +40,22 @@ const INITIAL_STUDENTS: StudentProfile[] = [
     avatar: '👧',
     currentChapterNumber: 1,
     unlockedLessonNumber: 7,
-    homework: {
-      lessonNumber: 7,
-      listenDone: true,
-      quizPassed: true,
-      recordingSubmitted: true,
-      audioBlobUrl: 'mock_audio_url_aisha',
-      feedbackStatus: 'pending',
-      submittedAt: 'Today at 09:30 AM',
-    },
+    plan: '3x',
+    nextLiveClass: 'Tomorrow at 5:00 PM',
+    status: 'passed',
+    teacherNotes: 'Excellent throat articulation on Haa and Khaa.',
     lastActive: '1 hour ago',
   },
   {
     id: 'std_3',
-    name: 'Hamza Ali',
-    avatar: '👦',
+    name: 'Brother David (Dawud)',
+    avatar: '👨',
     currentChapterNumber: 1,
-    unlockedLessonNumber: 12,
-    homework: {
-      lessonNumber: 12,
-      listenDone: true,
-      quizPassed: true,
-      recordingSubmitted: false,
-      feedbackStatus: 'pending',
-      submittedAt: 'Pending voice submission',
-    },
+    unlockedLessonNumber: 2,
+    plan: '2x',
+    nextLiveClass: 'Thursday at 6:00 PM',
+    status: 'active',
+    teacherNotes: 'New revert. Very patient pacing. Working on Baa vs Taa.',
     lastActive: 'Yesterday',
   },
   {
@@ -80,39 +64,28 @@ const INITIAL_STUDENTS: StudentProfile[] = [
     avatar: '👧',
     currentChapterNumber: 2,
     unlockedLessonNumber: 18,
-    homework: {
-      lessonNumber: 18,
-      listenDone: true,
-      quizPassed: true,
-      recordingSubmitted: true,
-      audioBlobUrl: 'mock_audio_url_sarah',
-      feedbackStatus: 'passed',
-      teacherFeedback: 'Excellent articulation of Ayn and Haa! Clean throat separation.',
-      submittedAt: 'Yesterday at 4:20 PM',
-    },
+    plan: '4x',
+    nextLiveClass: 'Today at 6:15 PM',
+    status: 'passed',
+    teacherNotes: 'Fast-track learner. Ready for Joining Letters (Chapter 2).',
     lastActive: '2 hours ago',
   },
   {
     id: 'std_5',
-    name: 'Bilal Farooq',
-    avatar: '👦',
+    name: 'Rashid Ahmed',
+    avatar: '👨',
     currentChapterNumber: 1,
-    unlockedLessonNumber: 3,
-    homework: {
-      lessonNumber: 3,
-      listenDone: true,
-      quizPassed: false,
-      recordingSubmitted: false,
-      feedbackStatus: 'needs_practice',
-      teacherFeedback: 'Please review the Taa vs Thaa tongue placement drill.',
-      submittedAt: 'Pending quiz completion',
-    },
+    unlockedLessonNumber: 5,
+    plan: '2x',
+    nextLiveClass: 'Saturday at 10:00 AM',
+    status: 'needs_revision',
+    teacherNotes: 'Needs revision on Jeem (ج) middle tongue pressure.',
     lastActive: '3 hours ago',
   },
 ];
 
 const PREDEFINED_FEEDBACK_CHIPS = [
-  'Mumtaz! Clean & clear articulation.',
+  'Mumtaz! Clean & clear articulation in live session.',
   'Keep tongue tip slightly between teeth for Thaa (ث).',
   'Deepen the sound from bottom of throat for Hamzah/Haa.',
   'Do not bounce this letter (no Qalqalah).',
@@ -126,43 +99,37 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
   onOpenClassroom,
 }) => {
   const [students, setStudents] = useState<StudentProfile[]>(() => {
-    const saved = localStorage.getItem('tajweed_teacher_students_roster');
+    const saved = localStorage.getItem('tajweed_teacher_students_roster_v2');
     return saved ? JSON.parse(saved) : INITIAL_STUDENTS;
   });
 
-  const [activeTab, setActiveTab] = useState<'queue' | 'sop'>('queue');
+  const [activeTab, setActiveTab] = useState<'roster' | 'sop'>('roster');
   const [selectedStudentId, setSelectedStudentId] = useState<string>('std_1');
   const [feedbackNote, setFeedbackNote] = useState<string>('');
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
-  const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'passed' | 'needs_practice'>('all');
+  const [filterPlan, setFilterPlan] = useState<'all' | '2x' | '3x' | '4x'>('all');
   const [isSopExpanded, setIsSopExpanded] = useState<boolean>(true);
 
   const saveStudents = (updated: StudentProfile[]) => {
     setStudents(updated);
-    localStorage.setItem('tajweed_teacher_students_roster', JSON.stringify(updated));
+    localStorage.setItem('tajweed_teacher_students_roster_v2', JSON.stringify(updated));
   };
 
   const selectedStudent = students.find((s) => s.id === selectedStudentId) || students[0];
-  const targetLesson = lessons.find((l) => l.lessonNumber === selectedStudent.homework.lessonNumber) || lessons[0];
-
-  const pendingCount = students.filter((s) => s.homework.recordingSubmitted && s.homework.feedbackStatus === 'pending').length;
+  const targetLesson = lessons.find((l) => l.lessonNumber === selectedStudent.unlockedLessonNumber) || lessons[0];
 
   const filteredStudents = students.filter((s) => {
-    if (filterStatus === 'all') return true;
-    return s.homework.feedbackStatus === filterStatus;
+    if (filterPlan === 'all') return true;
+    return s.plan === filterPlan;
   });
 
-  const handleApproveStudent = (studentId: string) => {
+  const handlePassLesson = (studentId: string) => {
     const updated = students.map((s) => {
       if (s.id === studentId) {
         return {
           ...s,
           unlockedLessonNumber: Math.min(29, s.unlockedLessonNumber + 1),
-          homework: {
-            ...s.homework,
-            feedbackStatus: 'passed' as const,
-            teacherFeedback: feedbackNote || 'Approved! Excellent articulation. Next letter unlocked.',
-          },
+          status: 'passed' as const,
+          teacherNotes: feedbackNote || `Passed Letter #${s.unlockedLessonNumber} in live session! Next letter unlocked.`,
         };
       }
       return s;
@@ -178,11 +145,8 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
       if (s.id === studentId) {
         return {
           ...s,
-          homework: {
-            ...s.homework,
-            feedbackStatus: 'needs_practice' as const,
-            teacherFeedback: feedbackNote || 'Please review makhraj step 2 and re-record recitation.',
-          },
+          status: 'needs_revision' as const,
+          teacherNotes: feedbackNote || `Review needed on Letter #${s.unlockedLessonNumber}. Scheduled for next 1-on-1 call.`,
         };
       }
       return s;
@@ -199,77 +163,73 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-200 text-xs font-semibold mb-2 border border-amber-400/30">
             <Users className="w-3.5 h-3.5 text-amber-300" />
-            <span>Teacher Command Center & Async Evaluation</span>
+            <span>Teacher 1-on-1 Portal & Live Session Manager</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Student Roster & Homework Review
+            Adult & Revert Student Roster
           </h1>
           <p className="text-amber-100/80 text-sm mt-1 max-w-xl">
-            Evaluate student voice homework asynchronously in minutes. 1 teacher can easily guide 50+ students with instant rubric checks and unlocks.
+            Manage your private 1-on-1 students, track individual lesson progress, and evaluate live recitation directly during calls.
           </p>
         </div>
 
         {/* Quick Action Metrics */}
         <div className="flex items-center gap-3 bg-burgundy-950/70 p-3 rounded-2xl border border-amber-400/20 self-start md:self-auto shadow-inner">
           <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center">
-            <div className="text-[10px] text-amber-200 uppercase font-black">Pending Reviews</div>
-            <div className="text-xl font-black text-amber-300 leading-none mt-0.5">{pendingCount} ⏳</div>
-          </div>
-
-          <div className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">
-            <div className="text-[10px] text-emerald-200 uppercase font-black">Total Students</div>
-            <div className="text-xl font-black text-emerald-300 leading-none mt-0.5">{students.length} 🎓</div>
+            <div className="text-[10px] text-amber-200 uppercase font-black">Active 1-on-1</div>
+            <div className="text-xl font-black text-amber-300 leading-none mt-0.5">{students.length} 👨‍🎓</div>
           </div>
 
           {onOpenClassroom && (
             <button
               onClick={onOpenClassroom}
-              className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-burgundy-950 font-black text-xs shadow-md transition-all whitespace-nowrap"
+              className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-burgundy-950 font-black text-xs shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
-              Start Live Class
+              <Video className="w-4 h-4 text-burgundy-950" />
+              <span>Launch Live Call</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Switcher: Homework Queue vs Teacher SOP Plan */}
+      {/* Main Switcher: Student Roster vs Teacher SOP Plan */}
       <div className="flex items-center justify-between gap-4 bg-white p-2 rounded-2xl border border-amber-900/10 shadow-xs">
         <div className="flex items-center gap-1.5">
           <button
-            onClick={() => setActiveTab('queue')}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
-              activeTab === 'queue'
+            onClick={() => setActiveTab('roster')}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'roster'
                 ? 'bg-burgundy-900 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
-            <Clock className="w-4 h-4" />
-            <span>Homework Evaluation Inbox ({pendingCount})</span>
+            <Users className="w-4 h-4" />
+            <span>Student 1-on-1 Roster ({students.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('sop')}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'sop'
                 ? 'bg-burgundy-900 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             <FileText className="w-4 h-4 text-amber-600" />
-            <span>Teacher Execution SOP & Lesson Flow</span>
+            <span>1-on-1 Class Execution SOP</span>
           </button>
         </div>
 
-        {activeTab === 'queue' && (
+        {activeTab === 'roster' && (
           <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs">
-            {(['all', 'pending', 'passed', 'needs_practice'] as const).map((st) => (
+            {(['all', '2x', '3x', '4x'] as const).map((p) => (
               <button
-                key={st}
-                onClick={() => setFilterStatus(st)}
-                className={`px-2.5 py-1 rounded-lg font-bold capitalize transition-all ${
-                  filterStatus === st ? 'bg-white text-burgundy-950 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                key={p}
+                onClick={() => setFilterPlan(p)}
+                className={`px-2.5 py-1 rounded-lg font-bold capitalize transition-all cursor-pointer ${
+                  filterPlan === p ? 'bg-white text-burgundy-950 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                {st === 'needs_practice' ? 'Needs Revision' : st}
+                {p === 'all' ? 'All Plans' : `${p} / Week`}
               </button>
             ))}
           </div>
@@ -277,28 +237,27 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
       </div>
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* VIEW A: HOMEWORK EVALUATION QUEUE */}
+      {/* VIEW A: 1-ON-1 STUDENT ROSTER & LIVE EVALUATION              */}
       {/* ──────────────────────────────────────────────────────────── */}
-      {activeTab === 'queue' && (
+      {activeTab === 'roster' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Student Roster List */}
           <div className="lg:col-span-5 space-y-3">
             <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center justify-between">
-              <span>Student Cohort List</span>
+              <span>Enrolled Students</span>
               <span className="text-xs font-semibold text-slate-500">{filteredStudents.length} Students</span>
             </h3>
 
             <div className="space-y-2">
               {filteredStudents.map((std) => {
                 const isSelected = std.id === selectedStudentId;
-                const lesson = lessons.find((l) => l.lessonNumber === std.homework.lessonNumber) || lessons[0];
+                const lesson = lessons.find((l) => l.lessonNumber === std.unlockedLessonNumber) || lessons[0];
 
                 return (
                   <div
                     key={std.id}
                     onClick={() => {
                       setSelectedStudentId(std.id);
-                      setIsPlayingAudio(false);
                       setFeedbackNote('');
                     }}
                     className={`
@@ -317,29 +276,15 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                           {std.name}
                         </div>
                         <div className="text-xs text-slate-500 mt-0.5">
-                          Target: <span className="font-bold text-amber-900">{lesson.name} ({lesson.arabicLetter})</span> • Ch {std.currentChapterNumber}
+                          Active: <span className="font-bold text-amber-900">{lesson.name} ({lesson.arabicLetter})</span> • Plan: {std.plan}/wk
                         </div>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      {std.homework.feedbackStatus === 'pending' && std.homework.recordingSubmitted ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black border border-amber-300">
-                          <Clock className="w-3 h-3 text-amber-600" /> Pending Review
-                        </span>
-                      ) : std.homework.feedbackStatus === 'passed' ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Approved
-                        </span>
-                      ) : std.homework.feedbackStatus === 'needs_practice' ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-black">
-                          <AlertCircle className="w-3 h-3 text-rose-600" /> Needs Revision
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold text-slate-400">
-                          Waiting voice
-                        </span>
-                      )}
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-bold">
+                        <Calendar className="w-3 h-3 text-amber-600" /> {std.nextLiveClass}
+                      </span>
                       <div className="text-[10px] text-slate-400 mt-1">{std.lastActive}</div>
                     </div>
                   </div>
@@ -348,7 +293,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
             </div>
           </div>
 
-          {/* Right Student Review & Audio Rubric Panel */}
+          {/* Right Student Review & Live Session Decision Panel */}
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-amber-900/10 shadow-lg space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div className="flex items-center gap-3">
@@ -360,7 +305,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                     {selectedStudent.name}
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Chapter {selectedStudent.currentChapterNumber} • Highest Unlocked: Letter {selectedStudent.unlockedLessonNumber} of 29
+                    Plan: <strong className="text-amber-900">{selectedStudent.plan} Sessions/Week</strong> • Next Class: {selectedStudent.nextLiveClass}
                   </p>
                 </div>
               </div>
@@ -368,7 +313,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
               {onOpenLesson && (
                 <button
                   onClick={() => onOpenLesson(targetLesson.lessonNumber)}
-                  className="px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-black hover:bg-amber-100 transition-colors flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-black hover:bg-amber-100 transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Inspect Lesson</span>
@@ -380,7 +325,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
             <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-amber-900/10 flex items-center justify-between gap-4">
               <div>
                 <div className="text-[10px] text-amber-800 font-extrabold uppercase tracking-wider">
-                  Assigned Letter & Articulation
+                  Target Letter for Live Session
                 </div>
                 <div className="text-base font-black text-slate-900 mt-0.5">
                   #{targetLesson.lessonNumber} {targetLesson.name} ({targetLesson.pronunciation})
@@ -397,84 +342,29 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
               </div>
             </div>
 
-            {/* Homework Status Checkmarks */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                <div className="text-[10px] text-slate-500 font-bold uppercase">1. Audio Drill</div>
-                <div className="text-xs font-black text-emerald-700 flex items-center justify-center gap-1 mt-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Done
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                <div className="text-[10px] text-slate-500 font-bold uppercase">2. Quiz Result</div>
-                <div className={`text-xs font-black flex items-center justify-center gap-1 mt-1 ${selectedStudent.homework.quizPassed ? 'text-emerald-700' : 'text-amber-700'}`}>
-                  {selectedStudent.homework.quizPassed ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <Clock className="w-3.5 h-3.5 text-amber-600" />}
-                  <span>{selectedStudent.homework.quizPassed ? 'Passed (90%)' : 'Incomplete'}</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                <div className="text-[10px] text-slate-500 font-bold uppercase">3. Voice File</div>
-                <div className={`text-xs font-black flex items-center justify-center gap-1 mt-1 ${selectedStudent.homework.recordingSubmitted ? 'text-emerald-700' : 'text-slate-400'}`}>
-                  {selectedStudent.homework.recordingSubmitted ? 'Available 🎙️' : 'Awaiting'}
-                </div>
-              </div>
-            </div>
-
-            {/* Student Audio Recitation Playback Box */}
-            {selectedStudent.homework.recordingSubmitted ? (
-              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-amber-950 uppercase tracking-wider">
-                      Student Voice Submission:
-                    </span>
-                    <span className="text-xs text-slate-500">{selectedStudent.homework.submittedAt}</span>
-                  </div>
-                  <span className="text-xs font-bold text-amber-800 bg-amber-200/60 px-2 py-0.5 rounded-md">
-                    0:12 Recitation
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-amber-200 shadow-2xs">
-                  <button
-                    onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                    className="w-10 h-10 rounded-xl bg-burgundy-900 text-white flex items-center justify-center shadow-md hover:bg-burgundy-950 transition-colors shrink-0"
-                  >
-                    {isPlayingAudio ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
-                  </button>
-
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-xs text-slate-600 font-semibold mb-1">
-                      <span>{isPlayingAudio ? 'Playing student pronunciation...' : 'Recitation Sample (3 repetitions)'}</span>
-                      <span>{isPlayingAudio ? '0:07 / 0:12' : '0:12'}</span>
-                    </div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full bg-emerald-500 rounded-full transition-all duration-300 ${isPlayingAudio ? 'w-2/3 animate-pulse' : 'w-0'}`} 
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="p-6 rounded-2xl bg-slate-50 border border-dashed border-slate-300 text-center text-slate-500 text-xs">
-                No voice recording submitted yet for this lesson. Student is currently completing drills.
+            {/* Student Progress & Previous Session Notes */}
+            {selectedStudent.teacherNotes && (
+              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+                <span className="text-[10px] font-black text-amber-900 uppercase tracking-wider block">
+                  Ustadh Notes from Last Session:
+                </span>
+                <p className="text-xs text-slate-700 font-medium">
+                  {selectedStudent.teacherNotes}
+                </p>
               </div>
             )}
 
             {/* Predefined Quick Feedback Chips */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-700 block">
-                Quick Pedagogical Feedback Chips (Tap to Insert):
+                Quick Live Guidance Chips (Tap to Add):
               </label>
               <div className="flex flex-wrap gap-1.5">
                 {PREDEFINED_FEEDBACK_CHIPS.map((chip, idx) => (
                   <button
                     key={idx}
                     onClick={() => setFeedbackNote(chip)}
-                    className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 transition-colors"
+                    className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 transition-colors cursor-pointer"
                   >
                     {chip}
                   </button>
@@ -485,33 +375,33 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
             {/* Custom Teacher Note Input */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700 block">
-                Teacher Feedback & Guidance Note:
+                Teacher Notes for This 1-on-1 Call:
               </label>
               <textarea
                 value={feedbackNote}
                 onChange={(e) => setFeedbackNote(e.target.value)}
-                placeholder="Write specific makhraj feedback or encouragement..."
+                placeholder="Notes on student articulation, homework practice, or Salah recitation..."
                 rows={2}
                 className="w-full p-3 rounded-xl border border-slate-300 text-xs font-medium focus:outline-hidden focus:ring-2 focus:ring-amber-400 bg-white"
               />
             </div>
 
-            {/* 1-Click Evaluation Decisions */}
+            {/* Live Session Evaluation Actions */}
             <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => handleRequestRevision(selectedStudent.id)}
                 className="flex-1 py-3 px-4 rounded-xl border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-800 font-black text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <AlertCircle className="w-4 h-4 text-rose-600" />
-                <span>Needs Revision (Retry)</span>
+                <span>Repeat in Next Session</span>
               </button>
 
               <button
-                onClick={() => handleApproveStudent(selectedStudent.id)}
+                onClick={() => handlePassLesson(selectedStudent.id)}
                 className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <Check className="w-4 h-4" />
-                <span>Pass & Unlock Next Letter (ممتاز)</span>
+                <span>Letter Mastered & Unlock Next (ممتاز)</span>
               </button>
             </div>
           </div>
@@ -519,7 +409,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
       )}
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* VIEW B: TEACHER EXECUTION SOP ACCORDION (From SOP Plan PDF) */}
+      {/* VIEW B: 1-ON-1 CLASSROOM SOP (From SOP Plan PDF)             */}
       {/* ──────────────────────────────────────────────────────────── */}
       {activeTab === 'sop' && (
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-amber-900/10 shadow-lg space-y-6">
@@ -530,7 +420,7 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                 <span>Official Teacher Execution Standard Operating Procedure</span>
               </div>
               <h2 className="text-xl font-extrabold text-slate-900">
-                Tajweed & Makhraj Class SOP Flow (30–45 Min Framework)
+                1-on-1 Adult & Revert Class SOP (25-Min Framework)
               </h2>
             </div>
 
@@ -550,12 +440,12 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                   1
                 </span>
                 <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
-                  5 Mins
+                  3 Mins
                 </span>
               </div>
-              <h4 className="font-extrabold text-sm text-slate-900">Warmup & Sifat Recall</h4>
+              <h4 className="font-extrabold text-sm text-slate-900">Warmup & Welcome</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Review previous lesson. Drill heavy letters (*Isti'la*) vs light letters (*Tarqeeq*) to prepare student articulation organs.
+                Greet the adult/revert warmly. Ask how their week was and review the previous letter to put them at ease.
               </p>
             </div>
 
@@ -566,12 +456,12 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                   2
                 </span>
                 <span className="text-[10px] font-bold text-blue-800 bg-blue-100 px-2 py-0.5 rounded-md">
-                  10 Mins
+                  7 Mins
                 </span>
               </div>
-              <h4 className="font-extrabold text-sm text-slate-900">Makhraj Demonstration</h4>
+              <h4 className="font-extrabold text-sm text-slate-900">Makhraj Anatomy</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Open articulation anatomical diagram. Show Step 1 (placement) and Step 2 (release sound). Contrast with common student traps (*Lahn Jali*).
+                Show the 3D mouth diagram for today's letter. Explain tongue contact point and vocal cord tension without academic jargon.
               </p>
             </div>
 
@@ -582,12 +472,12 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                   3
                 </span>
                 <span className="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md">
-                  15 Mins
+                  10 Mins
                 </span>
               </div>
-              <h4 className="font-extrabold text-sm text-slate-900">Recitation Drill & Rubric</h4>
+              <h4 className="font-extrabold text-sm text-slate-900">Live Repetition Drill</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Each student pronounces target letter with Fathah, Kasrah, Dammah, and Sukoon. Teacher evaluates on 3-point scale (*Mumtaz / Jayyid / Da'eef*).
+                Student repeats letter with Fathah, Kasrah, Dammah, and Sukoon. Ustadh corrects mouth shaping in real time.
               </p>
             </div>
 
@@ -601,9 +491,9 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                   5 Mins
                 </span>
               </div>
-              <h4 className="font-extrabold text-sm text-slate-900">Homework & Unlock Gate</h4>
+              <h4 className="font-extrabold text-sm text-slate-900">Surah / Dua Application</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Assign 10-second audio recitation in the app. Once approved in the review queue, the next letter is automatically unlocked for the student.
+                Connect the letter to an Ayah from Surah Al-Fatihah or Salah. Stamp completion and unlock next letter.
               </p>
             </div>
           </div>

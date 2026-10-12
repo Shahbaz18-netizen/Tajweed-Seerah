@@ -1,11 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import type { NavTab, LessonData, AppSettings, AppMode, DailyHomework } from './types';
+import type { NavTab, LessonData, AppSettings, AppMode } from './types';
 import { INITIAL_LESSONS, INITIAL_APP_SETTINGS } from './data/initialData';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { TeacherAnnotator } from './components/TeacherAnnotator';
 import { PWAInstallBanner } from './components/PWAInstallBanner';
-import { VoiceRecorderModal } from './components/VoiceRecorderModal';
 import { QURAN_CURRICULUM_CHAPTERS } from './data/chaptersData';
 
 // Code-splitting route views via React.lazy for instant load performance
@@ -86,19 +85,6 @@ export function App() {
     return saved ? parseInt(saved, 10) : 4;
   });
 
-  // Daily homework state
-  const [dailyHomework, setDailyHomework] = useState<DailyHomework>(() => {
-    const saved = localStorage.getItem('tajweed_daily_homework');
-    return saved ? JSON.parse(saved) : {
-      lessonNumber: 4,
-      listenDone: true,
-      quizPassed: false,
-      recordingSubmitted: false,
-      feedbackStatus: 'pending',
-    };
-  });
-
-  const [activeVoiceLesson, setActiveVoiceLesson] = useState<LessonData | null>(null);
   const [selectedLessonNumber, setSelectedLessonNumber] = useState<number>(3); // Letter Taa by default
 
   // Save changes to LocalStorage
@@ -117,20 +103,6 @@ export function App() {
   useEffect(() => {
     localStorage.setItem('tajweed_unlocked_lesson_number', String(unlockedLessonNumber));
   }, [unlockedLessonNumber]);
-
-  useEffect(() => {
-    localStorage.setItem('tajweed_daily_homework', JSON.stringify(dailyHomework));
-  }, [dailyHomework]);
-
-  const handleSubmitVoiceHomework = (audioUrl: string) => {
-    setDailyHomework((prev) => ({
-      ...prev,
-      recordingSubmitted: true,
-      audioBlobUrl: audioUrl,
-      submittedAt: 'Today at ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      feedbackStatus: 'pending',
-    }));
-  };
 
   const activeLesson = lessons.find((l) => l.lessonNumber === selectedLessonNumber) || lessons[2];
 
@@ -212,8 +184,6 @@ export function App() {
                 onSelectLesson={handleSelectLesson}
                 onNavigateTab={setCurrentTab}
                 unlockedLessonNumber={unlockedLessonNumber}
-                onOpenVoiceRecord={setActiveVoiceLesson}
-                dailyHomework={dailyHomework}
                 onUpdateUnlockedLesson={setUnlockedLessonNumber}
               />
             )}
@@ -336,16 +306,6 @@ export function App() {
 
       {/* PWA Offline & Installation Banner */}
       <PWAInstallBanner />
-
-      {/* Voice Homework Recording Modal */}
-      {activeVoiceLesson && (
-        <VoiceRecorderModal
-          lesson={activeVoiceLesson}
-          isOpen={!!activeVoiceLesson}
-          onClose={() => setActiveVoiceLesson(null)}
-          onSubmitRecording={handleSubmitVoiceHomework}
-        />
-      )}
     </div>
   );
 }

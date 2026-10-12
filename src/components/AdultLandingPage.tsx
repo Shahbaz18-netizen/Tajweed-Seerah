@@ -70,7 +70,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
     },
     {
       q: 'Can I practice between our live 1-on-1 sessions?',
-      a: 'Yes! Every enrolled student gets full 24/7 access to our interactive web app with 3D anatomical mouth diagrams, slow-motion audio, daily homework checklists, and Seerah stories to practice privately anytime.'
+      a: 'Yes! Every enrolled student gets full 24/7 access to our interactive web app with 3D anatomical mouth diagrams, interactive quizzes, and Seerah stories to study privately anytime.'
     }
   ];
 
@@ -360,7 +360,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
           <div>
             <div className="text-xs font-extrabold text-amber-900 uppercase">Prefer Independent Self-Study?</div>
             <p className="text-xs text-slate-600 mt-0.5">
-              Get the <strong>Self-Paced Web App Only Pass</strong> ($19/mo) with full interactive makhraj diagrams, audio player, and weekly voice audit.
+              Get the <strong>Self-Paced Web App Only Pass</strong> ($19/mo) with full interactive makhraj diagrams, 8-chapter curriculum, and interactive knowledge quizzes.
             </p>
           </div>
           <button
