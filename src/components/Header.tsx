@@ -108,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-              <span>Adult Masterclass 🎯</span>
+              <span>1-on-1 Adult & Revert 🎯</span>
             </button>
           </div>
         )}

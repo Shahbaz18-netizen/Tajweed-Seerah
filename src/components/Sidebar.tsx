@@ -35,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'practice', label: 'Practice & Quiz', icon: <Brain className="w-5 h-5 text-amber-300" />, badge: 'TEST' },
     { id: 'letters', label: '29 Alphabet Library', icon: <BookOpen className="w-5 h-5" />, badge: '29' },
     { id: 'life-mastery', label: 'Seerah Journey (سيرة)', icon: <BookOpen className="w-5 h-5" />, badge: '30 Ch' },
-    { id: 'landing', label: 'Adult Masterclass 🎯', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: 'PRO' },
+    { id: 'landing', label: '1-on-1 Adult & Revert 🎯', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: '1-ON-1' },
     { id: 'classroom', label: 'Live Classroom', icon: <Video className="w-5 h-5" /> },
     { id: 'settings', label: 'App Settings', icon: <Settings className="w-5 h-5" /> },
   ];

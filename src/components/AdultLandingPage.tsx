@@ -3,13 +3,16 @@ import {
   Sparkles,
   CheckCircle2,
   BookOpen,
-  Award,
   Lock,
   Clock,
   Star,
   ChevronDown,
   ChevronUp,
-  Check
+  Check,
+  Video,
+  Heart,
+  Calendar,
+  X
 } from 'lucide-react';
 import type { LanguageOption } from '../utils/translations';
 import confetti from 'canvas-confetti';
@@ -24,34 +27,50 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
   onStartLearning,
   onSelectTab,
 }) => {
-  const [selectedTier, setSelectedTier] = useState<'monthly' | 'annual' | 'lifetime'>('annual');
+  const [selectedPlan, setSelectedPlan] = useState<'2x' | '3x' | '4x' | 'self_paced'>('3x');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingName, setBookingName] = useState('');
+  const [bookingBackground, setBookingBackground] = useState<'revert' | 'adult_beginner' | 'revision'>('revert');
+  const [bookingTime, setBookingTime] = useState<'morning' | 'evening' | 'weekend'>('evening');
+  const [isBookedSuccess, setIsBookedSuccess] = useState(false);
 
-  const handleClaimTrial = () => {
-    confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
-    onStartLearning();
+  const handleOpenBooking = (plan: '2x' | '3x' | '4x' | 'self_paced') => {
+    setSelectedPlan(plan);
+    setIsBookingModalOpen(true);
+    setIsBookedSuccess(false);
+  };
+
+  const handleConfirmBooking = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsBookedSuccess(true);
+    confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
+    setTimeout(() => {
+      setIsBookingModalOpen(false);
+      onStartLearning();
+    }, 2500);
   };
 
   const faqs = [
     {
-      q: 'Is this platform suitable for complete adult beginners with zero prior Arabic knowledge?',
-      a: '100% Yes. Over 65% of our adult learners start from complete zero. We begin with Letter 1 (Alif) using 3D mouth position diagrams, slow-motion audio, and plain-English explanations without confusing academic jargon.'
+      q: 'I am a revert and know zero Arabic. Will I feel overwhelmed or judged?',
+      a: 'Never. Our Ustadhs are specifically trained to mentor adult reverts with utmost gentleness, patience, and warmth. You will be in a 100% private 1-on-1 environment where you can ask any question, repeat sounds as many times as you need, and learn with total dignity.'
     },
     {
-      q: 'How much time do I need to commit every day?',
-      a: 'Just 10 minutes a day! Our micro-lessons are specifically built for busy working professionals, university students, and parents. You can complete a lesson during your daily commute, lunch break, or late nights.'
+      q: 'Why 1-on-1 instead of group classes?',
+      a: 'Tajweed is a physical vocal science. In a group class, students often feel shy or embarrassed making mistakes in front of others. In private 1-on-1 sessions, your teacher listens exclusively to your voice, catches subtle tongue and throat positioning flaws instantly, and adapts the speed entirely to your comfort.'
     },
     {
-      q: 'Is my learning progress completely private?',
-      a: 'Yes, 100% private. We understand that many adult learners feel self-conscious starting from zero. Your progress, practice sessions, and retention quizzes are completely private and self-paced.'
+      q: 'What if I already know the alphabet and just need revision?',
+      a: 'During your first 1-on-1 session, your Ustadh will conduct a quick placement audit. If you already know the letters, we immediately fast-track you to Makhraj refinement, Heavy vs Light rules (Tafkheem/Tarqeeq), and reading directly from the Qur\'an.'
     },
     {
-      q: 'Can I use this on both my mobile phone and laptop/desktop computer?',
-      a: 'Yes! The platform is 100% responsive and works seamlessly across iPhone, Android, iPad, Mac, and Windows PC with automatic cloud synchronization.'
+      q: 'How does scheduling work with my busy work or family routine?',
+      a: 'We offer maximum flexibility. You choose your class times (morning, evening, or weekend). If an unexpected work meeting or family event comes up, you can easily reschedule with 12 hours notice.'
     },
     {
-      q: 'Can I cancel my subscription at any time?',
-      a: 'Absolutely. You have total control over your account and can pause or cancel your subscription at any time with a single click from your account dashboard.'
+      q: 'Can I practice between our live 1-on-1 sessions?',
+      a: 'Yes! Every enrolled student gets full 24/7 access to our interactive web app with 3D anatomical mouth diagrams, slow-motion audio, daily homework checklists, and Seerah stories to practice privately anytime.'
     }
   ];
 
@@ -59,52 +78,53 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
     <div className="space-y-12 max-w-6xl mx-auto pb-20 font-sans">
       {/* ─── URGENCY TOP ANNOUNCEMENT BAR ──────────────────────────────────── */}
       <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-burgundy-950 font-black text-xs sm:text-sm py-2.5 px-4 rounded-2xl text-center shadow-md flex items-center justify-center gap-2 border border-amber-300">
-        <Sparkles className="w-4 h-4 text-burgundy-950 shrink-0 animate-spin" />
-        <span>SPECIAL OFFER: Master Authentic Qur'an Pronunciation & Seerah Privately at Your Own Pace!</span>
+        <Sparkles className="w-4 h-4 text-burgundy-950 shrink-0" />
+        <span>PRIVATE 1-ON-1 TAJWEED MENTORSHIP: Safe, Patient & Non-Judgmental for Adults & Reverts</span>
       </div>
 
-      {/* ─── 1. HERO SECTION ($100M HOOK & DREAM OUTCOME) ──────────────────── */}
+      {/* ─── 1. HERO SECTION ────────────────────────────────────────────────── */}
       <div className="relative overflow-hidden bg-gradient-to-br from-burgundy-950 via-[#531321] to-amber-950 rounded-3xl p-6 sm:p-12 text-white shadow-2xl border border-amber-500/20 text-center space-y-6">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Floating Pill Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-black border border-amber-400/30 uppercase tracking-wider">
-          <Sparkles className="w-4 h-4 text-amber-300" /> Tailored For Adult Learners, Busy Professionals & Reverts
+          <Heart className="w-4 h-4 text-amber-300" /> Dedicated 1-on-1 Adult & Revert Mentorship
         </div>
 
-        {/* $100M High-Converting Hooks */}
+        {/* High-Converting Core Hook */}
         <div className="space-y-4 max-w-4xl mx-auto">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight font-serif text-white">
-            Too Embarrassed to Take Basic Arabic Classes as an Adult?
+            Too Embarrassed to Start Basic Arabic as an Adult or New Muslim?
           </h1>
           <p className="text-base sm:text-xl text-amber-100/90 font-medium leading-relaxed max-w-3xl mx-auto">
-            No time for 1-hour Tajweed classes? Master authentic Qur'an letter pronunciations (Makharij) & Seerah <strong className="text-amber-300 underline decoration-amber-400/60">privately from home in 10 minutes a day</strong>.
+            Experience patient, zero-judgment <strong className="text-amber-300 underline decoration-amber-400/60">private 1-on-1 Quran mentorship</strong> tailored to your schedule. Learn proper articulation, read your daily Salah with confidence, and connect with Allah's words from scratch.
           </p>
         </div>
 
         {/* 3 Core Value Pill Boxes */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto text-xs font-bold pt-2">
-          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-sm">
+          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-xs">
             <Lock className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>100% Private & Self-Paced</span>
+            <span>100% Private & Zero Judgment</span>
           </div>
-          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-sm">
+          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-xs">
+            <Video className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>Dedicated Live Ustadh Every Call</span>
+          </div>
+          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-xs">
             <Clock className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>10 Mins / Day Commute Friendly</span>
-          </div>
-          <div className="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-center gap-2 text-amber-200 shadow-sm">
-            <Award className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Verified Adult Certificate</span>
+            <span>Flexible Scheduling (2x, 3x, 4x / Wk)</span>
           </div>
         </div>
 
         {/* Hero Primary Call to Action */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button
-            onClick={handleClaimTrial}
+            onClick={() => handleOpenBooking('3x')}
             className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-burgundy-950 font-black text-sm sm:text-base shadow-xl shadow-amber-950/50 transition-all transform hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
           >
-            <span>Claim Your 7-Day Free Trial ➔</span>
+            <Calendar className="w-5 h-5 text-burgundy-950" />
+            <span>Book Your Free 1-on-1 Assessment Call ➔</span>
           </button>
 
           <button
@@ -112,7 +132,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
             className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-black text-sm border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <BookOpen className="w-4 h-4 text-amber-300" />
-            <span>Explore 8-Stage Pathway</span>
+            <span>Explore 8-Stage Curriculum</span>
           </button>
         </div>
 
@@ -126,221 +146,240 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <Star className="w-4 h-4 fill-amber-400" />
               <Star className="w-4 h-4 fill-amber-400" />
             </div>
-            <span className="font-bold text-white">4.9/5 Star Rating</span>
+            <span className="font-bold text-white">5.0 Star Mentor Rating</span>
           </div>
           <span>•</span>
-          <span>12,000+ Active Adult Learners</span>
+          <span>1,200+ Adults & Reverts Mentored</span>
           <span>•</span>
           <span>Trilingual English, Hinglish & Urdu</span>
         </div>
       </div>
 
-      {/* ─── 2. THE BEFORE VS AFTER ADULT TRANSFORMATION STORY ────────────────── */}
+      {/* ─── 2. WHY 1-ON-1 IS ESSENTIAL FOR ADULTS & REVERTS ─────────────────── */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Why Traditional Classes Fail Busy Adult Learners
+            Why Group Classes Fail Adults & New Muslims
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            Discover how Tajweed Master solves the exact pain points holding adults back.
+            Learn why private 1-on-1 mentorship produces 4x faster results without any embarrassment.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Old Way Card */}
+          {/* Group Class Pitfalls */}
           <div className="bg-rose-50/70 rounded-3xl p-6 border-2 border-rose-200 space-y-4">
             <div className="flex items-center gap-3 pb-3 border-b border-rose-200">
               <div className="w-10 h-10 rounded-2xl bg-rose-200 text-rose-800 flex items-center justify-center font-black text-lg">
                 ❌
               </div>
               <div>
-                <h3 className="font-black text-rose-950 text-base">The Frustrating Old Way</h3>
-                <p className="text-xs text-rose-700 font-semibold">Kids' Madrasahs & Rigid Schedules</p>
+                <h3 className="font-black text-rose-950 text-base">Crowded Group Classes</h3>
+                <p className="text-xs text-rose-700 font-semibold">Shyness, Waiting & Zero Personal Care</p>
               </div>
             </div>
 
             <ul className="space-y-3 text-xs text-slate-700 font-medium">
               <li className="flex items-start gap-2.5">
                 <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span>Feeling embarrassed sitting alongside 8-year-old children in basic Qaida classes.</span>
+                <span>Feeling self-conscious or humiliated mispronouncing letters in front of 15 other students.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span>Fixed 1-hour evening schedules that conflict with office hours, traffic, and family commitments.</span>
+                <span>Waiting 40 minutes for other students while getting only 3 minutes of actual recitation time.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span>Boring cartoon apps made for kids that lack scholarly depth and authentic sources.</span>
+                <span>Fixed rigid schedules that clash with your job, university exams, or children's routines.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span>Guessing how guttural throat letters (`ع`, `ح`, `خ`) sound without seeing inside the mouth.</span>
+                <span>Teachers who rush through rules without showing how to physically place the tongue and lips.</span>
               </li>
             </ul>
           </div>
 
-          {/* New Way Card ($100M Transformation) */}
+          {/* 1-on-1 Mentorship Model */}
           <div className="bg-emerald-50/90 rounded-3xl p-6 border-2 border-emerald-300 space-y-4 shadow-md">
             <div className="flex items-center gap-3 pb-3 border-b border-emerald-200">
               <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-lg shadow-xs">
                 ✅
               </div>
               <div>
-                <h3 className="font-black text-emerald-950 text-base">The Tajweed Master Adult System</h3>
-                <p className="text-xs text-emerald-800 font-bold">100% Private, Dignified & Micro-Chunked</p>
+                <h3 className="font-black text-emerald-950 text-base">Our 1-on-1 Mentorship Model</h3>
+                <p className="text-xs text-emerald-800 font-bold">Safe, Dedicated & Dignified</p>
               </div>
             </div>
 
             <ul className="space-y-3 text-xs text-slate-800 font-semibold">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>100% Private Self-Paced Learning</strong> — Practice from home with zero social anxiety or judgment.</span>
+                <span><strong>100% Private Dignity</strong> — Make mistakes freely in a patient, welcoming, safe environment.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>10-Minute Daily Micro-Lessons</strong> — Fits seamlessly during commutes, lunch breaks, or late nights.</span>
+                <span><strong>100% of Teacher's Attention</strong> — Every single minute is dedicated to listening and correcting your recitation.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>Scholarly Adult Depth</strong> — Trilingual notes (EN, Hinglish, Urdu) with classical Tajweed rules (*Al-Jazariyyah*).</span>
+                <span><strong>Flexible Scheduling</strong> — Morning, evening, or weekend slots designed around your adult life.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>3D Mouth Visualizers & 0.5x Slow Motion</strong> — See exact tongue contact points & mimic audio effortlessly.</span>
+                <span><strong>Interactive Web App Included</strong> — Practice with 3D mouth diagrams and audio between your live calls.</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* ─── 3. PRICING TIERS ───────────────────────────────────────────────── */}
+      {/* ─── 3. FREQUENCY-BASED 1-ON-1 PACKAGES ─────────────────────────────── */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-            Simple, Transparent Pricing
+            Simple 1-on-1 Monthly Mentorship Plans
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Invest in Your Sacred Qur'an Literacy Today
+            Choose Your Weekly 1-on-1 Live Class Frequency
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            Choose the plan that fits your adult learning goals. Cancel anytime.
+            All plans include a dedicated Ustadh, private live calls, flexible rescheduling, and full 24/7 web app access.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-          {/* Tier 1: Monthly */}
+          {/* Plan 1: 2x / Week */}
           <div 
-            onClick={() => setSelectedTier('monthly')}
+            onClick={() => setSelectedPlan('2x')}
             className={`bg-white rounded-3xl p-6 border-2 transition-all cursor-pointer flex flex-col justify-between space-y-5 ${
-              selectedTier === 'monthly'
+              selectedPlan === '2x'
                 ? 'border-amber-500 shadow-xl ring-2 ring-amber-400/40'
                 : 'border-slate-200 hover:border-slate-300 shadow-xs'
             }`}
           >
             <div className="space-y-3">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Monthly Adult Pass</span>
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">The Busy Professional</span>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-black text-slate-900">$9.99</span>
+                <span className="text-3xl sm:text-4xl font-black text-slate-900">$59</span>
                 <span className="text-xs text-slate-500 font-bold">/ month</span>
               </div>
-              <p className="text-xs text-slate-600 font-medium">Flexible monthly learning for adults on the go.</p>
+              <p className="text-xs text-slate-600 font-medium">Steady, manageable pace for working adults and busy parents.</p>
               
               <ul className="space-y-2.5 text-xs text-slate-700 font-semibold pt-3 border-t border-slate-100">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Full Access to 8 Tajweed Stages</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> All 30 Classical Seerah Modules</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Trilingual English, Hinglish & Urdu</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Cancel anytime</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> <strong>2 Private 1-on-1 Classes / Week</strong> (8/mo)</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> 25 Minutes Per Live Session</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Patient, Zero-Judgment Ustadh</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Full 24/7 Web App Access</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Flexible 12-Hour Rescheduling</li>
               </ul>
             </div>
 
             <button
-              onClick={handleClaimTrial}
-              className="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-colors cursor-pointer"
+              onClick={() => handleOpenBooking('2x')}
+              className="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-colors cursor-pointer"
             >
-              Start Monthly Pass
+              Choose 2 Classes / Week
             </button>
           </div>
 
-          {/* Tier 2: Annual (MOST POPULAR) */}
+          {/* Plan 2: 3x / Week (⭐ MOST POPULAR) */}
           <div 
-            onClick={() => setSelectedTier('annual')}
+            onClick={() => setSelectedPlan('3x')}
             className={`bg-gradient-to-b from-burgundy-950 to-amber-950 text-white rounded-3xl p-6 border-2 transition-all cursor-pointer flex flex-col justify-between space-y-5 relative shadow-2xl transform md:-translate-y-2 ${
-              selectedTier === 'annual'
+              selectedPlan === '3x'
                 ? 'border-amber-400 ring-4 ring-amber-400/30'
                 : 'border-amber-500/40'
             }`}
           >
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-burgundy-950 font-black text-[11px] px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
-              ⭐ Most Popular — Save 60%
+              ⭐ Most Recommended for Reverts
             </div>
 
             <div className="space-y-3 pt-2">
-              <span className="text-xs font-bold text-amber-300 uppercase tracking-wider block">Annual Adult Pass</span>
+              <span className="text-xs font-bold text-amber-300 uppercase tracking-wider block">The Dedicated Revert</span>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl sm:text-5xl font-black text-amber-400">$49</span>
-                <span className="text-xs text-amber-200 font-bold">/ year ($4.08/mo)</span>
+                <span className="text-4xl sm:text-5xl font-black text-amber-400">$89</span>
+                <span className="text-xs text-amber-200 font-bold">/ month</span>
               </div>
-              <p className="text-xs text-amber-100/90 font-medium">Complete 1-year mastery pass for adult learners.</p>
+              <p className="text-xs text-amber-100/90 font-medium">Optimal balance of live repetition, habit-building, and rapid retention.</p>
               
               <ul className="space-y-2.5 text-xs text-amber-100 font-semibold pt-3 border-t border-white/10">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Everything in Monthly Pass</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Priority Trilingual Support</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Verified Printable Certificate</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> 0.5x Slow-Motion Qari Audio Player</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> <strong>3 Private 1-on-1 Classes / Week</strong> (12/mo)</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> 25 Minutes Per Live Session</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Real-time Salah & Surah Correction</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Direct WhatsApp Q&A with Ustadh</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-400" /> Full 24/7 Web App & Seerah Modules</li>
               </ul>
             </div>
 
             <button
-              onClick={handleClaimTrial}
+              onClick={() => handleOpenBooking('3x')}
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-burgundy-950 font-black text-xs sm:text-sm transition-all shadow-lg cursor-pointer"
             >
-              Start Annual Mastery Pass ➔
+              Choose 3 Classes / Week ➔
             </button>
           </div>
 
-          {/* Tier 3: Executive Lifetime Pass */}
+          {/* Plan 3: 4x / Week Intensive */}
           <div 
-            onClick={() => setSelectedTier('lifetime')}
+            onClick={() => setSelectedPlan('4x')}
             className={`bg-white rounded-3xl p-6 border-2 transition-all cursor-pointer flex flex-col justify-between space-y-5 ${
-              selectedTier === 'lifetime'
+              selectedPlan === '4x'
                 ? 'border-amber-500 shadow-xl ring-2 ring-amber-400/40'
                 : 'border-slate-200 hover:border-slate-300 shadow-xs'
             }`}
           >
             <div className="space-y-3">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Executive Lifetime Pass</span>
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Intensive Fast-Track</span>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-black text-slate-900">$149</span>
-                <span className="text-xs text-slate-500 font-bold">one-time</span>
+                <span className="text-3xl sm:text-4xl font-black text-slate-900">$129</span>
+                <span className="text-xs text-slate-500 font-bold">/ month</span>
               </div>
-              <p className="text-xs text-slate-600 font-medium">Pay once for lifetime access & all future updates.</p>
+              <p className="text-xs text-slate-600 font-medium">Read the Qur'an with authentic Tajweed in 30–60 days.</p>
               
               <ul className="space-y-2.5 text-xs text-slate-700 font-semibold pt-3 border-t border-slate-100">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Unlimited Lifetime Access</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Family Access (Up to 4 Accounts)</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> All Future Module Updates Included</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> VIP Student Support</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> <strong>4 Private 1-on-1 Classes / Week</strong> (16/mo)</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> 30 Minutes Per Live Session</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Intensive Daily Recitation Coaching</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> VIP Scheduling & Weekend Priority</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600" /> Official Verified Certificate</li>
               </ul>
             </div>
 
             <button
-              onClick={handleClaimTrial}
-              className="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-colors cursor-pointer"
+              onClick={() => handleOpenBooking('4x')}
+              className="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-colors cursor-pointer"
             >
-              Get Lifetime Pass
+              Choose 4 Classes / Week
             </button>
           </div>
         </div>
+
+        {/* Self-Paced Option Banner */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="text-xs font-extrabold text-amber-900 uppercase">Prefer Independent Self-Study?</div>
+            <p className="text-xs text-slate-600 mt-0.5">
+              Get the <strong>Self-Paced Web App Only Pass</strong> ($19/mo) with full interactive makhraj diagrams, audio player, and weekly voice audit.
+            </p>
+          </div>
+          <button
+            onClick={onStartLearning}
+            className="px-5 py-2.5 rounded-xl bg-white border border-amber-300 text-burgundy-950 font-bold text-xs hover:bg-amber-100 transition-colors shrink-0"
+          >
+            Start Self-Paced ($19/mo)
+          </button>
+        </div>
       </div>
 
-      {/* ─── 4. ADULT TESTIMONIALS & REVIEWS ────────────────────────────────── */}
+      {/* ─── 4. REAL REVERT & ADULT STORIES ─────────────────────────────────── */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Loved by 12,000+ Adult Learners Worldwide
+            Inspiring Stories from Adult Learners & Reverts
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            Real stories from working professionals, university students, and revert Muslims.
+            Hear from brothers and sisters who started with zero Arabic and now recite with serenity.
           </p>
         </div>
 
@@ -354,11 +393,11 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <Star className="w-4 h-4 fill-amber-400" />
             </div>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              "As a 34-year-old software engineer, I was always self-conscious that I couldn't recite Arabic fluently. This app gave me 100% privacy to learn at my own pace. In 3 weeks, I mastered all 29 letter makharij!"
+              "I took Shahadah last year and was terrified of saying words wrong in Salah. Having a private 1-on-1 teacher who was so gentle and patient completely changed my spiritual life. I can now recite Surah Al-Fatihah with proper Tajweed!"
             </p>
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-900">Tariq M.</span>
-              <span className="text-slate-400">Software Engineer, UK</span>
+              <span className="font-bold text-slate-900">Brother David (Dawud)</span>
+              <span className="text-slate-400">Revert, United States</span>
             </div>
           </div>
 
@@ -371,11 +410,11 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <Star className="w-4 h-4 fill-amber-400" />
             </div>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              "I converted to Islam 2 years ago and struggled with Tajweed rules. The 3D mouth diagrams and slow-motion audio made letters like `ع` and `ح` crystal clear for the first time!"
+              "As a 42-year-old father, I felt ashamed that my young kids read better than me. The 1-on-1 setting gave me complete privacy. My Ustadh never judged me once. Best decision I made this year."
             </p>
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-900">Sarah K.</span>
-              <span className="text-slate-400">Revert Muslimah, Canada</span>
+              <span className="font-bold text-slate-900">Rashid A.</span>
+              <span className="text-slate-400">Project Manager, UK</span>
             </div>
           </div>
 
@@ -388,11 +427,11 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <Star className="w-4 h-4 fill-amber-400" />
             </div>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              "Between managing my medical practice and 3 kids, 1-hour live classes were impossible. Doing 10 minutes on this app during my train commute is a total game changer."
+              "The 3x a week 1-on-1 plan was perfect for my university schedule. Being able to practice with the app between classes and then get immediate live correction in my calls kept me 100% accountable."
             </p>
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-900">Dr. Bilal H.</span>
-              <span className="text-slate-400">Physician, USA</span>
+              <span className="font-bold text-slate-900">Sister Emily (Amina)</span>
+              <span className="text-slate-400">Medical Student, Canada</span>
             </div>
           </div>
         </div>
@@ -405,7 +444,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
             Frequently Asked Questions
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            Everything you need to know about starting your adult learning journey.
+            Everything you need to know about starting your 1-on-1 adult mentorship journey.
           </p>
         </div>
 
@@ -436,24 +475,139 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
       <div className="bg-gradient-to-r from-burgundy-950 via-[#5E1726] to-amber-950 text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl border border-amber-500/20">
         <div className="space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-4xl font-black text-white font-serif">
-            Claim Your 7-Day Free Trial Today
+            Book Your Free 1-on-1 Assessment Call
           </h2>
           <p className="text-xs sm:text-sm text-amber-100/90 font-medium">
-            Join 12,000+ adult Muslims mastering authentic Qur'an pronunciation in 10 minutes a day.
+            Meet your dedicated Ustadh, assess your current level with zero pressure, and experience the warmth of private 1-on-1 mentorship.
           </p>
         </div>
 
         <button
-          onClick={handleClaimTrial}
+          onClick={() => handleOpenBooking('3x')}
           className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-burgundy-950 font-black text-sm sm:text-base shadow-xl transition-all transform hover:scale-105 cursor-pointer inline-flex items-center gap-2"
         >
-          <span>Start Your Free Trial Now ➔</span>
+          <Calendar className="w-5 h-5" />
+          <span>Claim Your Free 1-on-1 Session Now ➔</span>
         </button>
 
         <p className="text-[11px] text-amber-200/70 font-semibold">
-          🔒 100% Private & Self-Paced • Cancel Anytime
+          🔒 100% Private & Non-Judgmental • Zero Obligation
         </p>
       </div>
+
+      {/* ─── 7. INTERACTIVE 1-ON-1 BOOKING MODAL ─────────────────────────────── */}
+      {isBookingModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-amber-900/20 relative space-y-5">
+            <button
+              onClick={() => setIsBookingModalOpen(false)}
+              className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {!isBookedSuccess ? (
+              <form onSubmit={handleConfirmBooking} className="space-y-4">
+                <div className="text-center space-y-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold">
+                    <Video className="w-3.5 h-3.5 text-amber-700" />
+                    <span>Free 1-on-1 Assessment Call</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900">
+                    Meet Your Dedicated Ustadh
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Selected Plan: <strong className="text-amber-900 uppercase">{selectedPlan} Classes/Week</strong>
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 block">Your Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={bookingName}
+                    onChange={(e) => setBookingName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full p-3 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 block">Where are you starting from?</label>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    {[
+                      { id: 'revert' as const, label: '🌱 New Revert' },
+                      { id: 'adult_beginner' as const, label: '📚 Adult Beginner' },
+                      { id: 'revision' as const, label: '⚡ Revision' },
+                    ].map((bg) => (
+                      <button
+                        type="button"
+                        key={bg.id}
+                        onClick={() => setBookingBackground(bg.id)}
+                        className={`p-2.5 rounded-xl border text-center font-bold transition-all ${
+                          bookingBackground === bg.id
+                            ? 'bg-amber-100 border-amber-400 text-amber-950 shadow-2xs'
+                            : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {bg.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 block">Preferred Live Class Timing</label>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    {[
+                      { id: 'morning' as const, label: '🌅 Morning' },
+                      { id: 'evening' as const, label: '🌆 Evening' },
+                      { id: 'weekend' as const, label: '🗓️ Weekends' },
+                    ].map((time) => (
+                      <button
+                        type="button"
+                        key={time.id}
+                        onClick={() => setBookingTime(time.id)}
+                        className={`p-2.5 rounded-xl border text-center font-bold transition-all ${
+                          bookingTime === time.id
+                            ? 'bg-amber-100 border-amber-400 text-amber-950 shadow-2xs'
+                            : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {time.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 rounded-xl bg-burgundy-900 hover:bg-burgundy-950 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>Confirm Free 1-on-1 Assessment Session ➔</span>
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div className="text-center py-6 space-y-4 animate-in fade-in zoom-in duration-300">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-2xl">
+                  ✓
+                </div>
+                <div>
+                  <h4 className="text-xl font-black text-slate-900">
+                    BarakAllahu Feek, {bookingName || 'Brother/Sister'}!
+                  </h4>
+                  <p className="text-xs text-slate-600 mt-1 max-w-sm mx-auto">
+                    Your free 1-on-1 assessment request has been confirmed. Your Ustadh will connect with you to confirm your first private session. Opening your learning portal now...
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
