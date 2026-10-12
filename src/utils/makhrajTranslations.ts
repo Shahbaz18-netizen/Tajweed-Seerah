@@ -956,8 +956,42 @@ export const MAKHRAJ_TRILINGUAL_DB: Record<number, MakhrajTranslationItem> = {
     },
   },
 
-  // 28. Yaa (ي)
+  // 28. Hamzah (ء)
   28: {
+    simpleExplanation: {
+      english: 'Produced from the bottom of the throat (Aqsa Al-Halq) with a clean glottal stop.',
+      hinglish: 'Gale ke sabse niche wale hisse se jhatke ki aazav ke saath bolein.',
+      urdu: 'اقصیٰ الحلق (حلق کے نچلے حصے) سے صاف جٹھکے کی آواز سے ادا ہوتا ہے۔',
+    },
+    step1: {
+      english: 'Relax bottom of throat.',
+      hinglish: 'Niche gale ko aaram se rakhein.',
+      urdu: 'اقصیٰ الحلق کو نرمی سے رکھیں۔',
+    },
+    step1Label: {
+      english: 'Bottom throat relaxed',
+      hinglish: 'Niche gala aaram',
+      urdu: 'اقصیٰ الحلق',
+    },
+    step2: {
+      english: 'Release sharp glottal stop sound (Hamzah).',
+      hinglish: 'Jhatke se Hamzah ki awaz nikalein.',
+      urdu: 'اقصیٰ الحلق سے صاف حمزہ ادا کریں۔',
+    },
+    step2Label: {
+      english: 'Hamzah stop release',
+      hinglish: 'Hamzah jhatka awaz',
+      urdu: 'حمزہ کی آواز',
+    },
+    keyRule: {
+      english: 'Sharp glottal stop. Produces Jhatka when Saakinah (ءْ).',
+      hinglish: 'Jhatke ki awaz hoti hai. Jazm/Sukoon par jhatka dein.',
+      urdu: 'صاف اور واضح حرف ہے۔ ساکن ہونے پر جھٹکا دیا جاتا ہے۔',
+    },
+  },
+
+  // 29. Yaa (ي)
+  29: {
     simpleExplanation: {
       english: 'Produced by raising middle of tongue towards upper palate without closing.',
       hinglish: 'Zabaan ke beech ko uper taloo ki taraf utakar Yaa bolein.',

@@ -235,7 +235,7 @@ const ExhaustiveNooraniExerciseGrid: React.FC<{
   );
 };
 
-const ALL_28_LETTERS_LIST = [
+const ALL_29_LETTERS_LIST = [
   { num: 1, char: 'ا', name: 'Alif', zone: 'Oral Cavity (Jawf)', type: 'light' },
   { num: 2, char: 'ب', name: 'Baa', zone: 'Lips (Shafatan)', type: 'light' },
   { num: 3, char: 'ت', name: 'Taa', zone: 'Tongue Tip (Lisan)', type: 'light' },
@@ -263,7 +263,8 @@ const ALL_28_LETTERS_LIST = [
   { num: 25, char: 'ن', name: 'Noon', zone: 'Tongue Tip & Nasal', type: 'light' },
   { num: 26, char: 'هـ', name: 'Haa (Light)', zone: 'Bottom Throat', type: 'light' },
   { num: 27, char: 'و', name: 'Waw', zone: 'Rounded Lips', type: 'light' },
-  { num: 28, char: 'ي', name: 'Yaa', zone: 'Middle Tongue', type: 'light' },
+  { num: 28, char: 'ء', name: 'Hamzah', zone: 'Bottom Throat', type: 'light' },
+  { num: 29, char: 'ي', name: 'Yaa', zone: 'Middle Tongue', type: 'light' },
 ];
 
 const AlphabetMakhrajLesson: React.FC<{
@@ -407,7 +408,7 @@ const AlphabetMakhrajLesson: React.FC<{
             activeTab === 'all' ? 'bg-amber-500 text-burgundy-950 shadow-xs' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          <span>🔤 All 28 Letters (1-by-1)</span>
+          <span>🔤 All 29 Letters (1-by-1)</span>
         </button>
         <button
           onClick={() => setActiveTab('heavy')}
@@ -423,7 +424,7 @@ const AlphabetMakhrajLesson: React.FC<{
             activeTab === 'light' ? 'bg-emerald-500 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          <span>🕊️ 21 Light Letters</span>
+          <span>🕊️ 22 Light Letters</span>
         </button>
         <button
           onClick={() => setActiveTab('zones')}
@@ -451,7 +452,7 @@ const AlphabetMakhrajLesson: React.FC<{
         </button>
       </div>
 
-      {/* TAB 0: ALL 28 LETTERS SEQUENTIAL PRACTICE GRID */}
+      {/* TAB 0: ALL 29 LETTERS SEQUENTIAL PRACTICE GRID */}
       {activeTab === 'all' && (
         <div className="space-y-5">
           <div className="bg-gradient-to-r from-amber-950 via-[#6B1B2A] to-amber-950 text-white p-5 rounded-3xl space-y-2 border border-amber-400/30">
@@ -459,14 +460,14 @@ const AlphabetMakhrajLesson: React.FC<{
               <span className="text-xs px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
                 Al-Mufradaat (الحُرُوفُ الْمُفْرَدَةُ)
               </span>
-              <span className="text-xs font-arabic text-amber-200" dir="rtl">٢٨ حَرْفًا</span>
+              <span className="text-xs font-arabic text-amber-200" dir="rtl">٢٩ حَرْفًا</span>
             </div>
             <h3 className="text-lg font-black text-white">
               {language === 'urdu'
-                ? 'تمام ۲۸ حروفِ تہجی کی مشق (الف سے یا تک)'
+                ? 'تمام ۲۹ حروفِ تہجی کی مشق (الف سے یا تک)'
                 : language === 'hinglish'
-                ? 'Tamam 28 Huroof ki Tarteeb-waar Mashq (Alif Se Yaa Tak)'
-                : 'Practice All 28 Arabic Letters One-by-One (Alif to Yaa)'}
+                ? 'Tamam 29 Huroof ki Tarteeb-waar Mashq (Alif Se Yaa Tak)'
+                : 'Practice All 29 Arabic Letters One-by-One (Alif to Yaa)'}
             </h3>
             <p className="text-xs text-amber-100/90 leading-relaxed font-medium">
               {language === 'urdu'
@@ -478,7 +479,7 @@ const AlphabetMakhrajLesson: React.FC<{
           </div>
 
           <div dir="rtl" className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {ALL_28_LETTERS_LIST.map((l) => (
+            {ALL_29_LETTERS_LIST.map((l) => (
               <div
                 key={l.num}
                 onClick={() => {

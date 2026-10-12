@@ -26,16 +26,26 @@ export function App() {
 
   // LocalStorage Persistence initialization with version sync
   const [lessons, setLessons] = useState<LessonData[]>(() => {
-    const DATA_VERSION = 'tajweed_v5_trilingual';
+    const DATA_VERSION = 'tajweed_v8_hamzah_29_letters';
     const currentVersion = localStorage.getItem('tajweed_app_data_version');
-    if (currentVersion !== DATA_VERSION) {
-      localStorage.setItem('tajweed_app_data_version', DATA_VERSION);
-      localStorage.setItem('tajweed_app_lessons', JSON.stringify(INITIAL_LESSONS));
-      localStorage.setItem('tajweed_app_settings', JSON.stringify(INITIAL_APP_SETTINGS));
-      return INITIAL_LESSONS;
-    }
     const saved = localStorage.getItem('tajweed_app_lessons');
-    return saved ? JSON.parse(saved) : INITIAL_LESSONS;
+
+    if (saved && currentVersion === DATA_VERSION) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length === INITIAL_LESSONS.length && parsed.some((l) => l.arabicLetter === 'ء')) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error('Error parsing stored lessons:', e);
+      }
+    }
+
+    // Re-initialize with full 29-letter data including Hamzah (ء)
+    localStorage.setItem('tajweed_app_data_version', DATA_VERSION);
+    localStorage.setItem('tajweed_app_lessons', JSON.stringify(INITIAL_LESSONS));
+    localStorage.setItem('tajweed_app_settings', JSON.stringify(INITIAL_APP_SETTINGS));
+    return INITIAL_LESSONS;
   });
 
   const [appSettings, setAppSettings] = useState<AppSettings>(() => {
@@ -232,7 +242,7 @@ export function App() {
                 secondaryColor: '#1E293B',
                 accentColor: '#D97706',
                 isMasterLocked: true,
-                selectedBook: '28 Arabic Letters Tajweed',
+                selectedBook: '29 Arabic Letters Tajweed',
                 templatePreset: 'kids',
               }}
               onClose={() => setIsPresentationOpen(false)}

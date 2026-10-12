@@ -41,9 +41,9 @@ export const LetterLibrary: React.FC<LetterLibraryProps> = ({
       {/* Title Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-amber-900/10 shadow-xs">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900">28 Arabic Alphabet Library</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900">29 Arabic Alphabet Library</h1>
           <p className="text-sm text-slate-500 mt-0.5">
-            Explore all 28 Arabic letters in authentic Right-to-Left (RTL) order with audio pronunciation & articulation guide.
+            Explore all 29 Arabic letters in authentic Right-to-Left (RTL) order with audio pronunciation & articulation guide.
           </p>
         </div>
         <div className="flex items-center gap-2">

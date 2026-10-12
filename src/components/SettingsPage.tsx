@@ -16,7 +16,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   onUpdateSettings,
 }) => {
   const booksRoadmap = [
-    { title: 'Level 1 — 28 Arabic Letters', status: 'Active Curriculum', count: '28 Lessons' },
+    { title: 'Level 1 — 29 Arabic Letters', status: 'Active Curriculum', count: '29 Lessons' },
     { title: 'Level 2 — Connecting Letters', status: 'Planned Expansion', count: '20 Lessons' },
     { title: 'Level 3 — Harakat (Vowels)', status: 'Planned Expansion', count: '16 Lessons' },
     { title: 'Level 4 — Sukoon & Shaddah', status: 'Planned Expansion', count: '18 Lessons' },

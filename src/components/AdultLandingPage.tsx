@@ -354,7 +354,7 @@ export const AdultLandingPage: React.FC<AdultLandingPageProps> = ({
               <Star className="w-4 h-4 fill-amber-400" />
             </div>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              "As a 34-year-old software engineer, I was always self-conscious that I couldn't recite Arabic fluently. This app gave me 100% privacy to learn at my own pace. In 3 weeks, I mastered all 28 letter makharij!"
+              "As a 34-year-old software engineer, I was always self-conscious that I couldn't recite Arabic fluently. This app gave me 100% privacy to learn at my own pace. In 3 weeks, I mastered all 29 letter makharij!"
             </p>
             <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
               <span className="font-bold text-slate-900">Tariq M.</span>

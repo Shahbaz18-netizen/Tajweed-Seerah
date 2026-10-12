@@ -45,7 +45,7 @@ const generateStep2Svg = (instruction: string, letter: string) => {
   return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="100%" height="100%"><rect width="200" height="150" rx="12" fill="%23F0FDF4"/><ellipse cx="100" cy="75" rx="65" ry="38" fill="%23BBF7D0" stroke="%2316A34A" stroke-width="3"/><path d="M 70 75 Q 100 95 130 75" stroke="%2316A34A" stroke-width="4" fill="none"/><path d="M 100 50 L 100 25 M 92 35 L 100 25 L 108 35" stroke="%23059669" stroke-width="3" fill="none"/><text x="100" y="82" font-family="sans-serif" font-size="20" font-weight="black" fill="%23166534" text-anchor="middle">${letter}</text><text x="100" y="135" font-family="sans-serif" font-size="9" font-weight="bold" fill="%2314532D" text-anchor="middle">${instruction}</text></svg>`;
 };
 
-// FULL 28-LETTER ACCURATE TAJWEED MAKHRAJ & PRONUNCIATION DATABASE
+// FULL 29-LETTER ACCURATE TAJWEED MAKHRAJ & PRONUNCIATION DATABASE
 export const FULL_MAKHRAJ_DATABASE: Record<number, ComprehensiveMakhrajInfo> = {
   // 1. ALIF (ا)
   1: {
@@ -506,8 +506,25 @@ export const FULL_MAKHRAJ_DATABASE: Record<number, ComprehensiveMakhrajInfo> = {
     step2Svg: generateStep2Svg('Smooth voiced glide (Waw)', 'و'),
   },
 
-  // 28. YAA (ي)
+  // 28. HAMZAH (ء)
   28: {
+    name: 'Aqsa Al-Halq (Bottom of Throat)',
+    arabicName: 'أقصى الحلق (منطقة الأوتار الصوتية)',
+    zone: 'Throat',
+    simpleExplanation: 'Produced from the deepest base of the throat near vocal cords with a sharp, clean glottal stop.',
+    teacherExplanation: 'Produced from Aqsa Al-Halq (deepest throat). Features Hams and Jahr depending on vocal cord closure.',
+    step1: 'Relax vocal cords at bottom of throat.',
+    step1Label: 'Bottom of throat relaxed',
+    step2: 'Release quick glottal stop sound "Hamzah" (ء).',
+    step2Label: 'Sharp glottal stop release (ء)',
+    keyRule: 'Always pronounced clearly with a sharp stop. When silent (ءْ), it produces a twitch/jerk effect (Jhatka).',
+    makhrajSvg: generateMakhrajSvg('throat-lower', 'ء', 'Bottom of throat (Aqsa Al-Halq)'),
+    step1Svg: generateStep1Svg('Bottom of throat relaxed', 'ء'),
+    step2Svg: generateStep2Svg('Sharp glottal stop (Hamzah)', 'ء'),
+  },
+
+  // 29. YAA (ي)
+  29: {
     name: 'Wasat Al-Lisan (Middle of Tongue)',
     arabicName: 'وسط اللسان مع ما يحاذيه من الحنك الأعلى',
     zone: 'Tongue',

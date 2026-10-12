@@ -23,14 +23,14 @@ export const QURAN_CURRICULUM_CHAPTERS: ChapterData[] = [
   {
     id: 'ch-1',
     number: 1,
-    title: 'The 28 Alphabet Letters & 17 Makharij',
+    title: 'The 29 Alphabet Letters & 17 Makharij',
     arabicTitle: 'الدرس الأول: الحروف الهجائية المفردة والمخارج الـ١٧',
     subtitle: 'Al-Hira Neo-Noorani Qaida • Lesson 1 (Mufradaat)',
     description: 'Learn to identify all 29 individual letters, their 17 anatomical mouth/throat articulation points (Makharij), and Heavy (Musta\'aliyah 7) vs Light letters.',
     iconName: 'Alphabet',
     gradient: 'from-amber-600 to-amber-800',
     accentColor: '#D97706',
-    totalLessons: 28,
+    totalLessons: 29,
     badge: 'Alphabet Master',
     milestoneReward: '🥉 Throat & Lips Novice Badge + Full Alphabet Certificate',
     topics: [

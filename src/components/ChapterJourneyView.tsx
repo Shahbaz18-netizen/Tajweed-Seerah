@@ -37,7 +37,7 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
 
   // Compute student progress
   const completedLettersCount = lessons.filter((l) => l.isCompleted).length;
-  const isCh1Completed = completedLettersCount === 28;
+  const isCh1Completed = completedLettersCount === 29;
   const nextPendingLesson = lessons.find((l) => !l.isCompleted)?.lessonNumber || 1;
 
   // Full unlock logic for all 8 chapters
@@ -80,7 +80,7 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
                 <Flame className="w-4 h-4" /> Active
               </div>
               <div className="text-xl font-black text-white mt-0.5">Chapter 1</div>
-              <div className="text-[10px] text-amber-200/70">28 Letters</div>
+              <div className="text-[10px] text-amber-200/70">29 Letters</div>
             </div>
 
             <div className="w-px h-10 bg-white/10" />
@@ -90,7 +90,7 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
                 <CheckCircle2 className="w-4 h-4" /> Progress
               </div>
               <div className="text-xl font-black text-white mt-0.5">
-                {completedLettersCount} <span className="text-xs text-slate-300 font-normal">/ 28</span>
+                {completedLettersCount} <span className="text-xs text-slate-300 font-normal">/ 29</span>
               </div>
               <div className="text-[10px] text-emerald-200/70">Letters Mastered</div>
             </div>
@@ -255,7 +255,7 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
                             <Sparkles className="w-4 h-4 text-amber-600" /> Stage 1 Letters Grid (Click any letter to study)
                           </h4>
                           <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                            {completedLettersCount} / 28 Mastered
+                            {completedLettersCount} / 29 Mastered
                           </span>
                         </div>
 

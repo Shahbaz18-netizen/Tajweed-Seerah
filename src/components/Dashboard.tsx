@@ -27,7 +27,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 }) => {
   const [selectedZone, setSelectedZone] = useState<string>('All');
 
-  const totalLetters = 28;
+  const totalLetters = 29;
   const completedCount = lessons.filter(l => l.isCompleted).length;
   const progressPercent = Math.round((completedCount / totalLetters) * 100);
 
@@ -54,7 +54,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </h1>
 
           <p className="text-amber-100/80 text-sm sm:text-base leading-relaxed">
-            Master all 28 Arabic letters with precise articulation diagrams, audio pronunciation, interactive forms, and instant self-practice.
+            Master all 29 Arabic letters with precise articulation diagrams, audio pronunciation, interactive forms, and instant self-practice.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -68,7 +68,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               onClick={() => onNavigateTab('letters')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm border border-white/20 transition-all duration-150"
             >
-              <span>Alphabet Library (28)</span>
+              <span>Alphabet Library (29)</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -84,7 +84,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <BookOpen className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-slate-900">28 Letters</div>
+          <div className="text-3xl font-extrabold text-slate-900">29 Letters</div>
           <p className="text-xs text-slate-500 mt-1">Complete Tajweed Curriculum</p>
         </div>
 
@@ -95,7 +95,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-emerald-800">{completedCount} / 28</div>
+          <div className="text-3xl font-extrabold text-emerald-800">{completedCount} / 29</div>
           <p className="text-xs text-slate-500 mt-1">Pronunciation & Makhraj verified</p>
         </div>
 
@@ -125,11 +125,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
 
-      {/* 28 Arabic Letter Grid with Articulation Filters */}
+      {/* 29 Arabic Letter Grid with Articulation Filters */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">28 Arabic Letters Library</h2>
+            <h2 className="text-xl font-bold text-slate-900">29 Arabic Letters Library</h2>
             <p className="text-xs text-slate-500">Tap any letter card to open its interactive lesson & audio guide</p>
           </div>
 

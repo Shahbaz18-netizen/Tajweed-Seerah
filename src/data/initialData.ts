@@ -3,7 +3,7 @@ import { FULL_MAKHRAJ_DATABASE } from './makhrajGuideData';
 
 export const INITIAL_APP_SETTINGS: AppSettings = {
   title: 'Arabic Tajweed Master',
-  subtitle: 'Interactive 28-Letter Tajweed & Makhraj Guide',
+  subtitle: 'Interactive 29-Letter Tajweed & Makhraj Guide',
   author: 'Ustadh Al-Huda',
   academy: 'Qur\'an Literacy Academy',
   defaultLanguage: 'hinglish',
@@ -50,7 +50,8 @@ const ARABIC_LETTERS_RAW = [
   { num: 25, char: 'ن', name: 'Noon', pron: 'Noon', zone: 'Nasal' as ArticulationZone, eng: 'Tip of tongue touching upper gums with Ghunnah', isolated: 'ن', beginning: 'نـ', middle: 'ـنـ', ending: 'ـن' },
   { num: 26, char: 'ه', name: 'Haa (Light)', pron: 'Haa', zone: 'Throat' as ArticulationZone, eng: 'Bottom of throat light breath sound', isolated: 'ه', beginning: 'هـ', middle: 'ـهـ', ending: 'ـه' },
   { num: 27, char: 'و', name: 'Waw', pron: 'Waw', zone: 'Lips' as ArticulationZone, eng: 'Rounding both lips cleanly without contact', isolated: 'و', beginning: 'و', middle: 'ـو', ending: 'ـو' },
-  { num: 28, char: 'ي', name: 'Yaa', pron: 'Yaa', zone: 'Tongue' as ArticulationZone, eng: 'Middle of tongue raised toward hard palate', isolated: 'ي', beginning: 'يـ', middle: 'ـيـ', ending: 'ـي' },
+  { num: 28, char: 'ء', name: 'Hamzah', pron: 'Hamzah', zone: 'Throat' as ArticulationZone, eng: 'Bottom of throat with a sharp glottal stop sound', isolated: 'ء', beginning: 'أ', middle: 'ـأـ', ending: 'ـء' },
+  { num: 29, char: 'ي', name: 'Yaa', pron: 'Yaa', zone: 'Tongue' as ArticulationZone, eng: 'Middle of tongue raised toward hard palate', isolated: 'ي', beginning: 'يـ', middle: 'ـيـ', ending: 'ـي' },
 ];
 
 
@@ -226,7 +227,13 @@ const LETTER_VOCAB: Record<number, Array<{
     { position: 3, arabicWord: 'عَفْو', highlightChar: 'و', transliteration: 'Afw',    meaning: 'Pardon' },
     { position: 4, arabicWord: 'و',     highlightChar: 'و', transliteration: 'Waw',    meaning: 'The letter' },
   ],
-  28: [ // Yaa ي
+  28: [ // Hamzah ء
+    { position: 1, arabicWord: 'أَمَل',  highlightChar: 'أ', transliteration: 'Amal',  meaning: 'Hope' },
+    { position: 2, arabicWord: 'سَأَلَ', highlightChar: 'أ', transliteration: 'Sa\'ala', meaning: 'He asked' },
+    { position: 3, arabicWord: 'قَرَأَ', highlightChar: 'أ', transliteration: 'Qara\'a', meaning: 'He read' },
+    { position: 4, arabicWord: 'ء',     highlightChar: 'ء', transliteration: 'Hamzah', meaning: 'The letter' },
+  ],
+  29: [ // Yaa ي
     { position: 1, arabicWord: 'يَوْم', highlightChar: 'ي', transliteration: 'Yawm',   meaning: 'Day' },
     { position: 2, arabicWord: 'بَيْت', highlightChar: 'ي', transliteration: 'Bayt',   meaning: 'House' },
     { position: 3, arabicWord: 'كُرْسِي',highlightChar:'ي', transliteration: 'Kursi',  meaning: 'Chair' },
@@ -248,7 +255,7 @@ export const INITIAL_LESSONS: LessonData[] = ARABIC_LETTERS_RAW.map((item) => {
     name: item.name,
     pronunciation: item.pron,
     englishDescription: item.eng,
-    hinglishDescription: `${item.pron} jaise ${item.name} ka awaaz`,
+    hinglishDescription: `${item.pron} jaise ${item.name} ki awaaz`,
     urduDescription: `حرف ${item.char}`,
     forms: {
       isolated: item.isolated,

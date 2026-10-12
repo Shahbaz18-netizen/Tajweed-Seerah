@@ -39,7 +39,7 @@ const INITIAL_STUDENTS: StudentRecord[] = [
     avatar: '👨‍🎓',
     currentChapter: 3,
     completedChapters: [1, 2],
-    completedLettersCount: 28,
+    completedLettersCount: 29,
     assignedChapter: 3,
     lastActive: '10 mins ago',
     badges: ['Makhraj Master', 'Harakat Scholar'],
@@ -52,7 +52,7 @@ const INITIAL_STUDENTS: StudentRecord[] = [
     avatar: '👩‍🎓',
     currentChapter: 5,
     completedChapters: [1, 2, 3, 4],
-    completedLettersCount: 28,
+    completedLettersCount: 29,
     assignedChapter: 5,
     lastActive: '2 hours ago',
     badges: ['Makhraj Master', 'Harakat Scholar', 'Joining Expert', 'Qalqalah Pro'],
@@ -78,7 +78,7 @@ const INITIAL_STUDENTS: StudentRecord[] = [
     avatar: '👧',
     currentChapter: 7,
     completedChapters: [1, 2, 3, 4, 5, 6],
-    completedLettersCount: 28,
+    completedLettersCount: 29,
     assignedChapter: 7,
     lastActive: 'Just now',
     badges: ['Makhraj Master', 'Harakat Scholar', 'Joining Expert', 'Madd Expert', 'Tashdeed Star'],
@@ -91,7 +91,7 @@ const INITIAL_STUDENTS: StudentRecord[] = [
     avatar: '🧑‍🎓',
     currentChapter: 8,
     completedChapters: [1, 2, 3, 4, 5, 6, 7, 8],
-    completedLettersCount: 28,
+    completedLettersCount: 29,
     assignedChapter: 8,
     lastActive: '3 hours ago',
     badges: ['Makhraj Master', 'Harakat Scholar', 'Qari Graduate', 'Surah Al-Fatiha Master'],
@@ -211,7 +211,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               completedChapters: [1, 2, 3, 4, 5, 6, 7, 8],
               currentChapter: 8,
               assignedChapter: 8,
-              completedLettersCount: 28,
+              completedLettersCount: 29,
             }
           : s
       )
@@ -224,7 +224,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               completedChapters: [1, 2, 3, 4, 5, 6, 7, 8],
               currentChapter: 8,
               assignedChapter: 8,
-              completedLettersCount: 28,
+              completedLettersCount: 29,
             }
           : null
       );
@@ -334,7 +334,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between mt-1 text-[11px] text-slate-500">
-                      <span>{std.completedLettersCount}/28 Letters</span>
+                      <span>{std.completedLettersCount}/29 Letters</span>
                       <span className="font-semibold text-emerald-700">{progressPct}% Done</span>
                     </div>
 

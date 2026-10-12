@@ -31,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems: { id: NavTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { id: 'journey', label: 'Curriculum Path', icon: <Map className="w-5 h-5" />, badge: '8 Ch' },
+    { id: 'letters', label: '29 Alphabet Library', icon: <BookOpen className="w-5 h-5" />, badge: '29' },
     { id: 'life-mastery', label: 'Seerah Journey (سيرة)', icon: <BookOpen className="w-5 h-5" />, badge: '30 Ch' },
     { id: 'landing', label: 'Adult Masterclass 🎯', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: 'PRO' },
     { id: 'classroom', label: 'Live Classroom', icon: <Video className="w-5 h-5" /> },
