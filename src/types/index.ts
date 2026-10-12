@@ -6,6 +6,7 @@ export type NavTab =
   | 'letters'
   | 'lesson'
   | 'classroom'
+  | 'practice'
   | 'settings'
   | 'chapter-lesson'
   | 'life-mastery'

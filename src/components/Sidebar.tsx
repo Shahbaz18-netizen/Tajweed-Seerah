@@ -7,7 +7,8 @@ import {
   GraduationCap,
   Presentation,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Brain
 } from 'lucide-react';
 import type { NavTab, AppMode } from '../types';
 
@@ -31,6 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems: { id: NavTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { id: 'journey', label: 'Curriculum Path', icon: <Map className="w-5 h-5" />, badge: '8 Ch' },
+    { id: 'practice', label: 'Practice & Quiz', icon: <Brain className="w-5 h-5 text-amber-300" />, badge: 'TEST' },
     { id: 'letters', label: '29 Alphabet Library', icon: <BookOpen className="w-5 h-5" />, badge: '29' },
     { id: 'life-mastery', label: 'Seerah Journey (سيرة)', icon: <BookOpen className="w-5 h-5" />, badge: '30 Ch' },
     { id: 'landing', label: 'Adult Masterclass 🎯', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: 'PRO' },
@@ -150,8 +152,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {[
           { id: 'dashboard' as NavTab, label: 'Home', icon: <LayoutDashboard className="w-5 h-5" /> },
           { id: 'journey' as NavTab, label: 'Curriculum', icon: <Map className="w-5 h-5" />, highlight: true },
+          { id: 'practice' as NavTab, label: 'Practice', icon: <Brain className="w-5 h-5" /> },
           { id: 'life-mastery' as NavTab, label: 'Seerah', icon: <BookOpen className="w-5 h-5" /> },
-          { id: 'classroom' as NavTab, label: 'Classroom', icon: <Video className="w-5 h-5" /> },
+          { id: 'classroom' as NavTab, label: 'Class', icon: <Video className="w-5 h-5" /> },
         ].map((item) => {
           const isActive = currentTab === item.id;
           return (

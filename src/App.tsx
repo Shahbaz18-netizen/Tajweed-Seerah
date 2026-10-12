@@ -1,21 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import type { NavTab, LessonData, AppSettings, AppMode } from './types';
 import { INITIAL_LESSONS, INITIAL_APP_SETTINGS } from './data/initialData';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
-import { Dashboard } from './components/Dashboard';
-import { LetterLibrary } from './components/LetterLibrary';
-import { InteractiveLessonView } from './components/InteractiveLessonView';
-import { SettingsPage } from './components/SettingsPage';
-import { StudentPresentationMode } from './components/StudentPresentationMode';
-import { ChapterJourneyView } from './components/ChapterJourneyView';
-import { ChapterLessonView } from './components/ChapterLessonView';
-import { ClassroomView } from './components/ClassroomView';
 import { TeacherAnnotator } from './components/TeacherAnnotator';
 import { PWAInstallBanner } from './components/PWAInstallBanner';
-import { UniversalLifeMasteryView } from './components/UniversalLifeMasteryView';
-import { AdultLandingPage } from './components/AdultLandingPage';
 import { QURAN_CURRICULUM_CHAPTERS } from './data/chaptersData';
+
+// Code-splitting route views via React.lazy for instant load performance
+const Dashboard = lazy(() => import('./components/Dashboard').then((m) => ({ default: m.Dashboard })));
+const LetterLibrary = lazy(() => import('./components/LetterLibrary').then((m) => ({ default: m.LetterLibrary })));
+const InteractiveLessonView = lazy(() => import('./components/InteractiveLessonView').then((m) => ({ default: m.InteractiveLessonView })));
+const SettingsPage = lazy(() => import('./components/SettingsPage').then((m) => ({ default: m.SettingsPage })));
+const StudentPresentationMode = lazy(() => import('./components/StudentPresentationMode').then((m) => ({ default: m.StudentPresentationMode })));
+const ChapterJourneyView = lazy(() => import('./components/ChapterJourneyView').then((m) => ({ default: m.ChapterJourneyView })));
+const ChapterLessonView = lazy(() => import('./components/ChapterLessonView').then((m) => ({ default: m.ChapterLessonView })));
+const ClassroomView = lazy(() => import('./components/ClassroomView').then((m) => ({ default: m.ClassroomView })));
+const UniversalLifeMasteryView = lazy(() => import('./components/UniversalLifeMasteryView').then((m) => ({ default: m.UniversalLifeMasteryView })));
+const AdultLandingPage = lazy(() => import('./components/AdultLandingPage').then((m) => ({ default: m.AdultLandingPage })));
+const PracticeQuizView = lazy(() => import('./components/PracticeQuizView').then((m) => ({ default: m.PracticeQuizView })));
+
+const PageLoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-[50vh] p-8 text-center animate-in fade-in duration-300">
+    <div className="relative">
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#551421] to-[#3B0C16] border-2 border-amber-400/50 flex items-center justify-center shadow-xl animate-pulse">
+        <span className="font-arabic font-bold text-3xl text-amber-300">ت</span>
+      </div>
+      <div className="absolute -inset-2 rounded-3xl border-2 border-amber-400/30 animate-spin border-t-transparent pointer-events-none" />
+    </div>
+    <div className="mt-4 text-sm font-bold text-burgundy-950 tracking-wide">
+      Loading Tajweed Module...
+    </div>
+    <div className="text-xs text-amber-800/70 mt-1 font-arabic">
+      بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+    </div>
+  </div>
+);
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<NavTab>('dashboard');
@@ -144,117 +164,127 @@ export function App() {
           onChangeLanguage={handleChangeLanguage}
         />
 
-        {/* View Router */}
+        {/* View Router with Suspense Lazy Loading */}
         <main className="p-4 sm:p-6 lg:p-8 flex-1 max-w-7xl w-full mx-auto pb-24 lg:pb-8">
-          {currentTab === 'dashboard' && (
-            <Dashboard
-              lessons={lessons}
-              mode={mode}
-              onSelectLesson={handleSelectLesson}
-              onNavigateTab={setCurrentTab}
-            />
-          )}
-
-          {currentTab === 'journey' && (
-            <ChapterJourneyView
-              lessons={lessons}
-              mode={mode}
-              onSelectLesson={handleSelectLesson}
-              onOpenChapterLesson={handleOpenChapterLesson}
-              completedChapters={completedChapters}
-            />
-          )}
-
-          {currentTab === 'life-mastery' && (
-            <UniversalLifeMasteryView
-              language={appSettings.defaultLanguage || 'hinglish'}
-              mode={mode}
-            />
-          )}
-
-          {currentTab === 'landing' && (
-            <AdultLandingPage
-              language={appSettings.defaultLanguage || 'english'}
-              onStartLearning={() => setCurrentTab('journey')}
-              onSelectTab={(tab) => setCurrentTab(tab as NavTab)}
-            />
-          )}
-
-          {currentTab === ('chapter-lesson' as NavTab) && activeChapterNumber && (() => {
-            const chap = QURAN_CURRICULUM_CHAPTERS.find((c) => c.number === activeChapterNumber);
-            if (!chap) return null;
-            return (
-              <ChapterLessonView
-                chapter={chap}
+          <Suspense fallback={<PageLoadingFallback />}>
+            {currentTab === 'dashboard' && (
+              <Dashboard
+                lessons={lessons}
                 mode={mode}
+                onSelectLesson={handleSelectLesson}
+                onNavigateTab={setCurrentTab}
+              />
+            )}
+
+            {currentTab === 'practice' && (
+              <PracticeQuizView
+                lessons={lessons}
                 language={appSettings.defaultLanguage || 'hinglish'}
-                onBack={() => setCurrentTab('journey')}
-                onMarkComplete={() => handleMarkChapterComplete(activeChapterNumber)}
-                isCompleted={completedChapters.includes(activeChapterNumber)}
                 onSelectLesson={handleSelectLesson}
               />
-            );
-          })()}
+            )}
 
-          {currentTab === 'letters' && (
-            <LetterLibrary
-              lessons={lessons}
-              onSelectLesson={handleSelectLesson}
-            />
-          )}
+            {currentTab === 'journey' && (
+              <ChapterJourneyView
+                lessons={lessons}
+                mode={mode}
+                onSelectLesson={handleSelectLesson}
+                onOpenChapterLesson={handleOpenChapterLesson}
+                completedChapters={completedChapters}
+              />
+            )}
 
-          {currentTab === 'lesson' && activeLesson && (
-            <InteractiveLessonView
-              lesson={activeLesson}
-              mode={mode}
-              language={appSettings.defaultLanguage || 'hinglish'}
-              onChangeLanguage={handleChangeLanguage}
-              onSelectLesson={handleSelectLesson}
-              onToggleComplete={handleToggleComplete}
-              onUpdateLessonMakhrajImage={handleUpdateLessonMakhrajImage}
-              totalLessons={lessons.length}
-              allLessons={lessons}
-            />
-          )}
+            {currentTab === 'life-mastery' && (
+              <UniversalLifeMasteryView
+                language={appSettings.defaultLanguage || 'hinglish'}
+                mode={mode}
+              />
+            )}
 
-          {currentTab === 'classroom' && !isPresentationOpen && (
-            <ClassroomView
-              lessons={lessons}
-              mode={mode}
-              appSettings={appSettings}
-              onOpenPresentation={() => setIsPresentationOpen(true)}
-              completedChapters={completedChapters}
-              onUpdateCompletedChapters={setCompletedChapters}
-            />
-          )}
+            {currentTab === 'landing' && (
+              <AdultLandingPage
+                language={appSettings.defaultLanguage || 'english'}
+                onStartLearning={() => setCurrentTab('journey')}
+                onSelectTab={(tab) => setCurrentTab(tab as NavTab)}
+              />
+            )}
 
-          {currentTab === 'classroom' && isPresentationOpen && (
-            <StudentPresentationMode
-              lesson={activeLesson}
-              bookSettings={{
-                title: appSettings.title,
-                subtitle: appSettings.subtitle,
-                author: appSettings.author,
-                edition: 'Digital Edition',
-                publisher: appSettings.academy,
-                coverPattern: 'Islamic Star Geometric',
-                primaryColor: '#6A1B29',
-                secondaryColor: '#1E293B',
-                accentColor: '#D97706',
-                isMasterLocked: true,
-                selectedBook: '29 Arabic Letters Tajweed',
-                templatePreset: 'kids',
-              }}
-              onClose={() => setIsPresentationOpen(false)}
-            />
-          )}
+            {currentTab === ('chapter-lesson' as NavTab) && activeChapterNumber && (() => {
+              const chap = QURAN_CURRICULUM_CHAPTERS.find((c) => c.number === activeChapterNumber);
+              if (!chap) return null;
+              return (
+                <ChapterLessonView
+                  chapter={chap}
+                  mode={mode}
+                  language={appSettings.defaultLanguage || 'hinglish'}
+                  onBack={() => setCurrentTab('journey')}
+                  onMarkComplete={() => handleMarkChapterComplete(activeChapterNumber)}
+                  isCompleted={completedChapters.includes(activeChapterNumber)}
+                  onSelectLesson={handleSelectLesson}
+                />
+              );
+            })()}
 
-          {currentTab === 'settings' && (
-            <SettingsPage
-              appSettings={appSettings}
-              onUpdateSettings={setAppSettings}
-            />
-          )}
+            {currentTab === 'letters' && (
+              <LetterLibrary
+                lessons={lessons}
+                onSelectLesson={handleSelectLesson}
+              />
+            )}
+
+            {currentTab === 'lesson' && activeLesson && (
+              <InteractiveLessonView
+                lesson={activeLesson}
+                mode={mode}
+                language={appSettings.defaultLanguage || 'hinglish'}
+                onChangeLanguage={handleChangeLanguage}
+                onSelectLesson={handleSelectLesson}
+                onToggleComplete={handleToggleComplete}
+                onUpdateLessonMakhrajImage={handleUpdateLessonMakhrajImage}
+                totalLessons={lessons.length}
+                allLessons={lessons}
+              />
+            )}
+
+            {currentTab === 'classroom' && !isPresentationOpen && (
+              <ClassroomView
+                lessons={lessons}
+                mode={mode}
+                appSettings={appSettings}
+                onOpenPresentation={() => setIsPresentationOpen(true)}
+                completedChapters={completedChapters}
+                onUpdateCompletedChapters={setCompletedChapters}
+              />
+            )}
+
+            {currentTab === 'classroom' && isPresentationOpen && (
+              <StudentPresentationMode
+                lesson={activeLesson}
+                bookSettings={{
+                  title: appSettings.title,
+                  subtitle: appSettings.subtitle,
+                  author: appSettings.author,
+                  edition: 'Digital Edition',
+                  publisher: appSettings.academy,
+                  coverPattern: 'Islamic Star Geometric',
+                  primaryColor: '#6A1B29',
+                  secondaryColor: '#1E293B',
+                  accentColor: '#D97706',
+                  isMasterLocked: true,
+                  selectedBook: '29 Arabic Letters Tajweed',
+                  templatePreset: 'kids',
+                }}
+                onClose={() => setIsPresentationOpen(false)}
+              />
+            )}
+
+            {currentTab === 'settings' && (
+              <SettingsPage
+                appSettings={appSettings}
+                onUpdateSettings={setAppSettings}
+              />
+            )}
+          </Suspense>
         </main>
       </div>
 

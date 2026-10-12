@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Video, GraduationCap, Presentation, Map, LayoutDashboard, BookOpen, Sparkles } from 'lucide-react';
+import { Menu, Video, GraduationCap, Presentation, Map, LayoutDashboard, BookOpen, Sparkles, Brain } from 'lucide-react';
 import type { AppSettings, AppMode, NavTab } from '../types';
 
 interface HeaderProps {
@@ -73,6 +73,18 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Alphabet Library</span>
+            </button>
+
+            <button
+              onClick={() => onSelectTab('practice')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                currentTab === 'practice'
+                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Brain className="w-3.5 h-3.5 text-amber-700" />
+              <span className="hidden sm:inline">Practice & Quiz</span>
             </button>
 
             <button

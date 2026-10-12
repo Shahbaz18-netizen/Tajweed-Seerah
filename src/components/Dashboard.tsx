@@ -5,7 +5,8 @@ import {
   ArrowRight, 
   BookOpen, 
   GraduationCap,
-  Volume2
+  Volume2,
+  Brain
 } from 'lucide-react';
 import type { LessonData, AppMode, ArticulationZone } from '../types';
 import { playArabicAudio } from '../utils/audioHelper';
@@ -59,14 +60,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
-              onClick={() => onNavigateTab('journey')}
+              onClick={() => onNavigateTab('practice')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-burgundy-950 font-black text-sm shadow-md transition-all duration-150 transform active:scale-95"
+            >
+              <Brain className="w-4 h-4" /> Practice & Quiz Mode 🧠
+            </button>
+            <button
+              onClick={() => onNavigateTab('journey')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm border border-white/20 transition-all duration-150"
             >
               <Sparkles className="w-4 h-4" /> View 8-Chapter Journey
             </button>
             <button
               onClick={() => onNavigateTab('letters')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm border border-white/20 transition-all duration-150"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/15 text-white/90 font-medium text-sm border border-white/10 transition-all duration-150"
             >
               <span>Alphabet Library (29)</span>
               <ArrowRight className="w-4 h-4" />
