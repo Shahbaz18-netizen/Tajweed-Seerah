@@ -4,7 +4,7 @@ import {
   ArrowRight, 
   BookOpen, 
   GraduationCap, 
-  Brain,
+  Sparkles,
   Lock,
   Compass
 } from 'lucide-react';
@@ -88,11 +88,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </button>
 
             <button
-              onClick={() => onNavigateTab('practice')}
+              onClick={() => onNavigateTab('landing')}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-burgundy-950/80 hover:bg-burgundy-950 text-amber-200 font-bold text-xs sm:text-sm border border-amber-400/30 transition-all cursor-pointer"
             >
-              <Brain className="w-4 h-4 text-amber-300" />
-              <span>Interactive Knowledge Quiz</span>
+              <Sparkles className="w-4 h-4 text-amber-300" />
+              <span>1-on-1 Mentorship (Book Session)</span>
             </button>
           </div>
         </div>
@@ -133,6 +133,96 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
           <div className="text-3xl font-extrabold text-amber-900">{progressPercent}%</div>
           <p className="text-xs text-slate-500 mt-1">Active Letter: #{unlockedLessonNumber}</p>
+        </div>
+      </div>
+
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 2.5 CORE FOUNDATION PATHWAY                                  */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      <div className="space-y-4">
+        <div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-1">
+            <span>✨</span> Curated Blueprint for Adults & Reverts
+          </div>
+          <h2 className="text-xl font-extrabold text-slate-900">Your Core Learning Journey</h2>
+          <p className="text-xs text-slate-500">
+            A balanced pathway designed so you never feel overwhelmed. Learn to read Quran properly with Tajweed and live the peaceful Sunnah habits.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Card 1: Quran Reading & Tajweed */}
+          <div 
+            onClick={() => onNavigateTab('journey')}
+            className="p-5 rounded-3xl bg-white border border-amber-300/80 hover:border-amber-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                  Core Track 1
+                </span>
+                <span className="text-xl">📖</span>
+              </div>
+              <div>
+                <h3 className="font-extrabold text-base text-slate-900 group-hover:text-amber-800 transition-colors">
+                  Quran Reading & Tajweed Mastery
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  29 letters, throat & tongue makharij, and word formation. Taught with zero judgment and patient guidance in private 1-on-1 live sessions.
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-700">
+              <span>Enter Curriculum (8 Chapters)</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          {/* Card 2: Daily Sunnah Habits & Adab */}
+          <div 
+            onClick={() => onNavigateTab('daily-habits')}
+            className="p-5 rounded-3xl bg-white border border-emerald-300/80 hover:border-emerald-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
+                  Core Track 2
+                </span>
+                <span className="text-xl">🌿</span>
+              </div>
+              <div>
+                <h3 className="font-extrabold text-base text-slate-900 group-hover:text-emerald-800 transition-colors">
+                  Daily Sunnah Habits & Adab
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Step-by-step mindful Wudu, morning protection dhikr, eating manners, and interactive Barakah daily tracker.
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+              <span>Open Daily Habit Tracker</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </div>
+
+        {/* Gentle Seerah & Mentorship Banner */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-900/10 via-amber-500/10 to-emerald-500/10 border border-purple-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
+              <span>📜</span>
+              <span>Spiritual Enrichment Library: Prophetic Life & Character (سيرة)</span>
+            </div>
+            <p className="text-xs text-slate-600">
+              Relax before sleep with bite-sized inspiring stories of the Prophet Muhammad ﷺ’s mercy and resilience at your own pace.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigateTab('life-mastery')}
+            className="shrink-0 px-4 py-2 rounded-xl bg-purple-900 hover:bg-purple-950 text-white text-xs font-bold shadow-xs transition-all"
+          >
+            Browse 30 Stories
+          </button>
         </div>
       </div>
 

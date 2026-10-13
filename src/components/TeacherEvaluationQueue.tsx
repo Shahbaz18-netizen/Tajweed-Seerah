@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Users, 
-  AlertCircle, 
-  BookOpen, 
-  Award, 
-  ChevronDown, 
-  ChevronUp, 
-  FileText, 
-  Check, 
+import {
+  Users,
+  AlertCircle,
+  BookOpen,
+  Award,
+  ChevronDown,
+  ChevronUp,
+  FileText,
+  Check,
   Video,
   Calendar
 } from 'lucide-react';
@@ -197,22 +197,20 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setActiveTab('roster')}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === 'roster'
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'roster'
                 ? 'bg-burgundy-900 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Users className="w-4 h-4" />
             <span>Student 1-on-1 Roster ({students.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('sop')}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === 'sop'
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'sop'
                 ? 'bg-burgundy-900 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <FileText className="w-4 h-4 text-amber-600" />
             <span>1-on-1 Class Execution SOP</span>
@@ -225,9 +223,8 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
               <button
                 key={p}
                 onClick={() => setFilterPlan(p)}
-                className={`px-2.5 py-1 rounded-lg font-bold capitalize transition-all cursor-pointer ${
-                  filterPlan === p ? 'bg-white text-burgundy-950 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className={`px-2.5 py-1 rounded-lg font-bold capitalize transition-all cursor-pointer ${filterPlan === p ? 'bg-white text-burgundy-950 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 {p === 'all' ? 'All Plans' : `${p} / Week`}
               </button>
@@ -262,8 +259,8 @@ export const TeacherEvaluationQueue: React.FC<TeacherEvaluationQueueProps> = ({
                     }}
                     className={`
                       p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3
-                      ${isSelected 
-                        ? 'bg-amber-50/80 border-amber-400 shadow-md ring-1 ring-amber-400/40' 
+                      ${isSelected
+                        ? 'bg-amber-50/80 border-amber-400 shadow-md ring-1 ring-amber-400/40'
                         : 'bg-white border-slate-200 hover:border-amber-300 hover:bg-slate-50/60'}
                     `}
                   >

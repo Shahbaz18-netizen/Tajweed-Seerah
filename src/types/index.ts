@@ -3,10 +3,9 @@ export type AppMode = 'student' | 'teacher';
 export type NavTab = 
   | 'dashboard'
   | 'journey'
-  | 'letters'
   | 'lesson'
+  | 'daily-habits'
   | 'classroom'
-  | 'practice'
   | 'settings'
   | 'chapter-lesson'
   | 'life-mastery'

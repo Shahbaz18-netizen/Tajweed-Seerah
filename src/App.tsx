@@ -9,7 +9,6 @@ import { QURAN_CURRICULUM_CHAPTERS } from './data/chaptersData';
 
 // Code-splitting route views via React.lazy for instant load performance
 const Dashboard = lazy(() => import('./components/Dashboard').then((m) => ({ default: m.Dashboard })));
-const LetterLibrary = lazy(() => import('./components/LetterLibrary').then((m) => ({ default: m.LetterLibrary })));
 const InteractiveLessonView = lazy(() => import('./components/InteractiveLessonView').then((m) => ({ default: m.InteractiveLessonView })));
 const SettingsPage = lazy(() => import('./components/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 const StudentPresentationMode = lazy(() => import('./components/StudentPresentationMode').then((m) => ({ default: m.StudentPresentationMode })));
@@ -18,7 +17,7 @@ const ChapterLessonView = lazy(() => import('./components/ChapterLessonView').th
 const ClassroomView = lazy(() => import('./components/ClassroomView').then((m) => ({ default: m.ClassroomView })));
 const UniversalLifeMasteryView = lazy(() => import('./components/UniversalLifeMasteryView').then((m) => ({ default: m.UniversalLifeMasteryView })));
 const AdultLandingPage = lazy(() => import('./components/AdultLandingPage').then((m) => ({ default: m.AdultLandingPage })));
-const PracticeQuizView = lazy(() => import('./components/PracticeQuizView').then((m) => ({ default: m.PracticeQuizView })));
+const DailyHabitsView = lazy(() => import('./components/DailyHabitsView').then((m) => ({ default: m.DailyHabitsView })));
 
 const PageLoadingFallback = () => (
   <div className="flex flex-col items-center justify-center min-h-[50vh] p-8 text-center animate-in fade-in duration-300">
@@ -37,12 +36,52 @@ const PageLoadingFallback = () => (
   </div>
 );
 
+const getInitialTab = (): NavTab => {
+  if (typeof window !== 'undefined') {
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('landing')) return 'landing';
+    if (path.includes('dashboard')) return 'dashboard';
+    if (path.includes('journey')) return 'journey';
+    if (path.includes('daily-habits')) return 'daily-habits';
+    if (path.includes('classroom')) return 'classroom';
+    if (path.includes('life-mastery')) return 'life-mastery';
+    if (path.includes('settings')) return 'settings';
+  }
+  return 'landing';
+};
+
 export function App() {
-  const [currentTab, setCurrentTab] = useState<NavTab>('dashboard');
+  const [currentTab, setCurrentTab] = useState<NavTab>(getInitialTab);
   const [mode, setMode] = useState<AppMode>('student');
   const [activeChapterNumber, setActiveChapterNumber] = useState<number | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isPresentationOpen, setIsPresentationOpen] = useState(false);
+
+  // Sync /landingpage route with landing tab
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path.includes('landing')) {
+        setCurrentTab('landing');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (currentTab === 'landing') {
+        if (window.location.pathname !== '/landingpage') {
+          window.history.replaceState(null, '', '/landingpage');
+        }
+      } else {
+        if (window.location.pathname === '/landingpage') {
+          window.history.replaceState(null, '', '/');
+        }
+      }
+    }
+  }, [currentTab]);
 
   // LocalStorage Persistence initialization with version sync
   const [lessons, setLessons] = useState<LessonData[]>(() => {
@@ -188,15 +227,6 @@ export function App() {
               />
             )}
 
-            {currentTab === 'practice' && (
-              <PracticeQuizView
-                lessons={lessons}
-                language={appSettings.defaultLanguage || 'hinglish'}
-                onSelectLesson={handleSelectLesson}
-                unlockedLessonNumber={unlockedLessonNumber}
-              />
-            )}
-
             {currentTab === 'journey' && (
               <ChapterJourneyView
                 lessons={lessons}
@@ -204,6 +234,13 @@ export function App() {
                 onSelectLesson={handleSelectLesson}
                 onOpenChapterLesson={handleOpenChapterLesson}
                 completedChapters={completedChapters}
+              />
+            )}
+
+            {currentTab === 'daily-habits' && (
+              <DailyHabitsView
+                language={appSettings.defaultLanguage || 'hinglish'}
+                onNavigateTab={(tab) => setCurrentTab(tab as NavTab)}
               />
             )}
 
@@ -237,13 +274,6 @@ export function App() {
                 />
               );
             })()}
-
-            {currentTab === 'letters' && (
-              <LetterLibrary
-                lessons={lessons}
-                onSelectLesson={handleSelectLesson}
-              />
-            )}
 
             {currentTab === 'lesson' && activeLesson && (
               <InteractiveLessonView

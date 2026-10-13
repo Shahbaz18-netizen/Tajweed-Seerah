@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Video, GraduationCap, Presentation, Map, LayoutDashboard, BookOpen, Sparkles, Brain } from 'lucide-react';
+import { Menu, Video, GraduationCap, Presentation, Map, LayoutDashboard, Sparkles, Sun } from 'lucide-react';
 import type { AppSettings, AppMode, NavTab } from '../types';
 
 interface HeaderProps {
@@ -40,6 +40,18 @@ export const Header: React.FC<HeaderProps> = ({
         {onSelectTab && (
           <div className="hidden md:flex items-center gap-1.5 bg-white p-1 rounded-xl border border-amber-900/10 shadow-2xs">
             <button
+              onClick={() => onSelectTab('landing')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
+                currentTab === 'landing'
+                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
+                  : 'text-amber-900 bg-amber-100/80 hover:bg-amber-200 border border-amber-300'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+              <span>1-on-1 Mentorship</span>
+            </button>
+
+            <button
               onClick={() => onSelectTab('dashboard')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 currentTab === 'dashboard'
@@ -53,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('journey')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 currentTab === 'journey'
                   ? 'bg-amber-400 text-burgundy-950 shadow-xs'
                   : 'text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/60'
@@ -64,51 +76,15 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             <button
-              onClick={() => onSelectTab('letters')}
+              onClick={() => onSelectTab('daily-habits')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                currentTab === 'letters'
-                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                currentTab === 'daily-habits'
+                  ? 'bg-emerald-600 text-white shadow-xs font-black'
+                  : 'text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/60'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Alphabet Library</span>
-            </button>
-
-            <button
-              onClick={() => onSelectTab('practice')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                currentTab === 'practice'
-                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <Brain className="w-3.5 h-3.5 text-amber-700" />
-              <span className="hidden sm:inline">Practice & Quiz</span>
-            </button>
-
-            <button
-              onClick={() => onSelectTab('life-mastery')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                currentTab === 'life-mastery'
-                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
-                  : 'text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200/60'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5 text-purple-700" />
-              <span className="hidden sm:inline">Seerah Journey</span>
-            </button>
-
-            <button
-              onClick={() => onSelectTab('landing')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
-                currentTab === 'landing'
-                  ? 'bg-amber-400 text-burgundy-950 shadow-xs'
-                  : 'text-amber-900 bg-amber-100/80 hover:bg-amber-200 border border-amber-300'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-              <span>1-on-1 Adult & Revert 🎯</span>
+              <Sun className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Daily Sunnah Habits</span>
             </button>
           </div>
         )}

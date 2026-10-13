@@ -10,12 +10,10 @@ import {
   Star,
   ChevronDown,
   ChevronUp,
-  GraduationCap,
-  Volume2
+  GraduationCap
 } from 'lucide-react';
 import type { LessonData, AppMode } from '../types';
 import { QURAN_CURRICULUM_CHAPTERS, type ChapterData } from '../data/chaptersData';
-import { playArabicAudio } from '../utils/audioHelper';
 
 interface ChapterJourneyViewProps {
   lessons: LessonData[];
@@ -246,68 +244,6 @@ export const ChapterJourneyView: React.FC<ChapterJourneyViewProps> = ({
                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
                       {chapter.description}
                     </p>
-
-                    {/* INTERACTIVE 28 ARABIC LETTERS GRID FOR STAGE 1 */}
-                    {chapter.number === 1 && (
-                      <div className="space-y-3 pt-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-black uppercase text-amber-950 tracking-wider flex items-center gap-1.5">
-                            <Sparkles className="w-4 h-4 text-amber-600" /> Stage 1 Letters Grid (Click any letter to study)
-                          </h4>
-                          <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                            {completedLettersCount} / 29 Mastered
-                          </span>
-                        </div>
-
-                        <div dir="rtl" className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
-                          {lessons.map((l) => (
-                            <div
-                              key={l.id}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onSelectLesson(l.lessonNumber);
-                              }}
-                              className={`
-                                group relative flex flex-col justify-between p-3.5 rounded-2xl bg-white border text-right transition-all duration-150
-                                hover:-translate-y-1 hover:shadow-md hover:border-amber-400 cursor-pointer
-                                ${l.isCompleted ? 'border-emerald-300 bg-emerald-50/40 ring-1 ring-emerald-400/30' : 'border-slate-200'}
-                              `}
-                            >
-                              <div dir="ltr" className="flex items-center justify-between w-full">
-                                <span className="text-[10px] font-black text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200/60">
-                                  {String(l.lessonNumber).padStart(2, '0')}
-                                </span>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    playArabicAudio(l.arabicLetter);
-                                  }}
-                                  className="p-1 rounded text-amber-800 hover:bg-amber-100 transition-colors"
-                                  title="Play Audio"
-                                >
-                                  <Volume2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-
-                              <div className="my-2 text-center w-full">
-                                <span className="font-arabic font-bold text-3xl text-slate-900 group-hover:text-burgundy-900 transition-colors block">
-                                  {l.arabicLetter}
-                                </span>
-                              </div>
-
-                              <div dir="ltr" className="flex items-center justify-between w-full text-[11px] pt-1.5 border-t border-slate-100">
-                                <span className="font-bold text-slate-700 truncate">{l.name}</span>
-                                {l.isCompleted ? (
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                                ) : (
-                                  <span className="text-[9px] text-amber-800 font-bold uppercase">Study</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     {/* Topics Grid - Clickable to open lesson */}
                     <div className="space-y-2 pt-2">

@@ -8,7 +8,7 @@ import {
   Presentation,
   Sparkles,
   BookOpen,
-  Brain
+  Sun
 } from 'lucide-react';
 import type { NavTab, AppMode } from '../types';
 
@@ -30,13 +30,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setIsMobileOpen,
 }) => {
   const navItems: { id: NavTab; label: string; icon: React.ReactNode; badge?: string }[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { id: 'journey', label: 'Curriculum Path', icon: <Map className="w-5 h-5" />, badge: '8 Ch' },
-    { id: 'practice', label: 'Practice & Quiz', icon: <Brain className="w-5 h-5 text-amber-300" />, badge: 'TEST' },
-    { id: 'letters', label: '29 Alphabet Library', icon: <BookOpen className="w-5 h-5" />, badge: '29' },
-    { id: 'life-mastery', label: 'Seerah Journey (سيرة)', icon: <BookOpen className="w-5 h-5" />, badge: '30 Ch' },
-    { id: 'landing', label: '1-on-1 Adult & Revert 🎯', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: '1-ON-1' },
-    { id: 'classroom', label: 'Live Classroom', icon: <Video className="w-5 h-5" /> },
+    { id: 'landing', label: '1-on-1 Mentorship', icon: <Sparkles className="w-5 h-5 text-amber-300" />, badge: 'LANDING' },
+    { id: 'dashboard', label: 'Student Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+    { id: 'journey', label: 'Quran Curriculum', icon: <Map className="w-5 h-5 text-amber-300" />, badge: '8 CH' },
+    { id: 'daily-habits', label: 'Daily Sunnah & Adab', icon: <Sun className="w-5 h-5 text-emerald-300" />, badge: 'HABITS' },
+    { id: 'life-mastery', label: 'Prophetic Life (سيرة)', icon: <BookOpen className="w-5 h-5 text-purple-300" />, badge: 'ENRICH' },
+    { id: 'classroom', label: 'Live Classroom Roster', icon: <Video className="w-5 h-5" /> },
     { id: 'settings', label: 'App Settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
@@ -150,10 +149,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Always visible on phones so students never have to hunt for tabs   */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#551421] border-t border-amber-900/40 shadow-2xl flex items-stretch">
         {[
+          { id: 'landing' as NavTab, label: '1-on-1', icon: <Sparkles className="w-5 h-5" /> },
           { id: 'dashboard' as NavTab, label: 'Home', icon: <LayoutDashboard className="w-5 h-5" /> },
           { id: 'journey' as NavTab, label: 'Curriculum', icon: <Map className="w-5 h-5" />, highlight: true },
-          { id: 'practice' as NavTab, label: 'Practice', icon: <Brain className="w-5 h-5" /> },
-          { id: 'life-mastery' as NavTab, label: 'Seerah', icon: <BookOpen className="w-5 h-5" /> },
+          { id: 'daily-habits' as NavTab, label: 'Habits', icon: <Sun className="w-5 h-5" /> },
           { id: 'classroom' as NavTab, label: 'Class', icon: <Video className="w-5 h-5" /> },
         ].map((item) => {
           const isActive = currentTab === item.id;
